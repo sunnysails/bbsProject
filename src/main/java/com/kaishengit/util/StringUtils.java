@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by sunny on 2016/12/16.
  */
-public class StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
     private static Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
     public static String isoToUTF8(String str) {

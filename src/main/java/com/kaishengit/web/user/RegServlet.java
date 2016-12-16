@@ -23,14 +23,22 @@ public class RegServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("username");
+        String userName = req.getParameter("userName");
         String passWord = req.getParameter("passWord");
         String email = req.getParameter("email");
         String phone = req.getParameter("phone");
 
         Map<String ,Object> result = Maps.newHashMap();
+        try {
+            UserService userService = new UserService();
 
-        UserService userService = new UserService();
-        userService.saveUser(userName, passWord, email, phone);
+            userService.saveUser(userName, passWord, email, phone);
+            result.put("state", "success");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("state", "error");
+            result.put("message", "注册失败，请稍候再试");
+        }
+        renderJSON(result,resp);
     }
 }

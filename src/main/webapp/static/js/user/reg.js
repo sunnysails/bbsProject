@@ -26,7 +26,7 @@ $(function () {
             email: {
                 required: true,
                 email: true,
-                remote: "/validate/user"
+                remote: "/validate/email"
             },
             phone: {
                 required: true,

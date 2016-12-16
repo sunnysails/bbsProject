@@ -11,8 +11,8 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 public class UserDao {
     //存储user
     public void save(User user) {
-        String sql = "INSERT INTO t_user(username, password, email, phone, avatar) VALUES(?,?,?,?,?)";
-        DbHelp.update(sql, user.getUserName(), user.getPassWord(), user.getEmail(), user.getPhone(), user.getAvatar());
+        String sql = "INSERT INTO t_user(username, password, email, phone, state, avatar) VALUES (?,?,?,?,?,?)";
+        DbHelp.update(sql, user.getUserName(), user.getPassWord(), user.getEmail(), user.getPhone(), user.getState(), user.getAvatar());
     }
 
     //通过用户名来查找用户

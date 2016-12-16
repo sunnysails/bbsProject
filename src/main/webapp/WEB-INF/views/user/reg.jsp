@@ -32,13 +32,13 @@
                 <div class="control-group">
                     <label class="control-label">密码</label>
                     <div class="controls">
-                        <input type="text" name="passWord">
+                        <input type="password" name="passWord" id="passWord">
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">重复密码</label>
                     <div class="controls">
-                        <input type="text" name="dpassWord">
+                        <input type="password" name="dpassWord">
                     </div>
                 </div>
                 <div class="control-group">
