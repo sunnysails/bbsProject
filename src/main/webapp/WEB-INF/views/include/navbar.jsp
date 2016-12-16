@@ -16,7 +16,7 @@
         <ul class="unstyled inline pull-right">
             <li>
                 <a href="#">
-                    <img src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/20/h/20"
+                    <img src="http://oi245j9g2.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD.jpg?imageView2/1/w/20/h/20"
                          class="img-circle" alt="">
                 </a>
             </li>

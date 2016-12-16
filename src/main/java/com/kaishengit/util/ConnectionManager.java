@@ -12,25 +12,17 @@ import javax.sql.DataSource;
 
 public class ConnectionManager {
 
-    private static String DRIVER ;
-    private static String URL ;
-    private static String USERNAME ;
-    private static String PASSWORD ;
+    private static String DRIVER;
+    private static String URL;
+    private static String USERNAME;
+    private static String PASSWORD;
     private static BasicDataSource dataSource = new BasicDataSource();
 
     static {
-        //加载并读取config.properties文件
-        Properties prop = new Properties();
-        try {
-            prop.load(ConnectionManager.class.getClassLoader().getResourceAsStream("config.properties"));
-            DRIVER = prop.getProperty("jdbc.driver");
-            URL = prop.getProperty("jdbc.url");
-            USERNAME = prop.getProperty("jdbc.username");
-            PASSWORD = prop.getProperty("jdbc.password");
-        } catch (IOException e) {
-            throw new DataAccessException("读取config.properties文件异常",e);
-        }
-
+        DRIVER = Config.get("jdbc.driver");
+        URL = Config.get("jdbc.url");
+        USERNAME = Config.get("jdbc.username");
+        PASSWORD = Config.get("jdbc.password");
 
         dataSource.setDriverClassName(DRIVER);
         dataSource.setUrl(URL);
@@ -46,6 +38,7 @@ public class ConnectionManager {
 
     /**
      * 获取数据库连接池
+     *
      * @return
      */
     public static DataSource getDataSource() {
@@ -58,7 +51,7 @@ public class ConnectionManager {
         try {
             connection = dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataAccessException("获取数据库连接异常",e);
+            throw new DataAccessException("获取数据库连接异常", e);
         }
         return connection;
     }

@@ -18,7 +18,7 @@ public class DbHelp {
         return ConnectionManager.getConnection();
     }
 
-    public static void update(String sql,Object... params) throws DataAccessException {
+    public static void update(String sql, Object... params) throws DataAccessException {
 
         try {
             QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
@@ -26,32 +26,32 @@ public class DbHelp {
 
             logger.debug("SQL: {}", sql);
         } catch (SQLException ex) {
-            logger.error("执行{}异常",sql);
-            throw new DataAccessException("执行"+ sql + "异常",ex);
+            logger.error("执行{}异常", sql);
+            throw new DataAccessException("执行" + sql + "异常", ex);
         }
     }
 
-    public static <T> T query(String sql,ResultSetHandler<T> handler,Object... params) throws DataAccessException {
+    public static <T> T query(String sql, ResultSetHandler<T> handler, Object... params) throws DataAccessException {
 
         QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
-            T t = queryRunner.query(sql,handler,params);
+            T t = queryRunner.query(sql, handler, params);
 
-            logger.debug("SQL: {}",sql);
+            logger.debug("SQL: {}", sql);
             return t;
         } catch (SQLException e) {
-            logger.error("执行{}异常",sql);
-            throw new DataAccessException("执行"+ sql + "异常",e);
+            logger.error("执行{}异常", sql);
+            throw new DataAccessException("执行" + sql + "异常", e);
         }
     }
 
     private static void close(Connection connection) {
-        if(connection != null) {
+        if (connection != null) {
             try {
                 connection.close();
             } catch (SQLException e) {
                 logger.error("关闭Connection异常");
-                throw new DataAccessException("关闭Connection异常",e);
+                throw new DataAccessException("关闭Connection异常", e);
             }
         }
 

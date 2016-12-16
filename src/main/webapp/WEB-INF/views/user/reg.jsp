@@ -22,38 +22,42 @@
                 <span class="title"><i class="fa fa-sign-in"></i> 注册账号</span>
             </div>
 
-            <form action="" class="form-horizontal">
+            <form id="regForm" action="" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label">账号</label>
                     <div class="controls">
-                        <input type="text">
+                        <input type="text" name="userName">
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">密码</label>
                     <div class="controls">
-                        <input type="text">
+                        <input type="text" name="passWord">
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">重复密码</label>
                     <div class="controls">
-                        <input type="text">
+                        <input type="text" name="dpassWord">
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">电子邮件</label>
                     <div class="controls">
-                        <input type="text">
+                        <input type="text" name="email">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">手机号码</label>
+                    <div class="controls">
+                        <input type="text" name="phone">
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button class="btn btn-primary">注册</button>
+                    <button id="regBtn" class="btn btn-primary">注册</button>
                     <a class="pull-right" href="/login">登录</a>
                 </div>
-
             </form>
-
         </div>
         <!--box end-->
     </div>

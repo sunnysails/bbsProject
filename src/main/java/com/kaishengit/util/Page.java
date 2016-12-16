@@ -20,8 +20,8 @@ public class Page<T> {
     //当前页的起始行号
     private int start;
 
-    public Page(int totals,int pageNo) {
-        if(pageNo < 1) {
+    public Page(int totals, int pageNo) {
+        if (pageNo < 1) {
             pageNo = 1;
         }
         this.totals = totals;
@@ -29,11 +29,11 @@ public class Page<T> {
 
         //获取总页数
         totalPage = totals / pageSize;
-        if(totals % pageSize != 0) {
+        if (totals % pageSize != 0) {
             totalPage++;
         }
 
-        if(pageNo > totalPage) {
+        if (pageNo > totalPage) {
             pageNo = totalPage;
         }
         this.pageNo = pageNo;
@@ -41,10 +41,6 @@ public class Page<T> {
         //计算当前页的起始行数
         start = (pageNo - 1) * pageSize;
     }
-
-
-
-
 
 
     public int getTotalPage() {
