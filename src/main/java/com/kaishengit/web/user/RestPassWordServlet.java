@@ -1,4 +1,6 @@
-package com.kaishengit.web;
+package com.kaishengit.web.user;
+
+import com.kaishengit.web.BaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,10 +11,10 @@ import java.io.IOException;
 /**
  * Created by sunny on 2016/12/17.
  */
-@WebServlet("/home")
-public class HomeServlet extends BaseServlet {
+@WebServlet("/user/rspassword")
+public class RestPassWordServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        forWord("index",req, resp);
+        String token = req.getParameter("token");
     }
 }

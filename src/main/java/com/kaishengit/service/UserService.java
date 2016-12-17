@@ -33,6 +33,14 @@ public class UserService {
     private static Cache<String, String> cache = CacheBuilder.newBuilder()
             .expireAfterWrite(6, TimeUnit.HOURS)
             .build();
+    //发送找回密码的TOKEN缓存
+    private static Cache<String, String> fondCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(30, TimeUnit.MILLISECONDS)
+            .build();
+    //限制操作频率的缓存
+    private static Cache<String, String> activeCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(60, TimeUnit.SECONDS)
+            .build();
 
     /**
      * @param token 根据激活邮件种URL 的token 值激活对应的用户
@@ -130,11 +138,10 @@ public class UserService {
         if (user != null && DigestUtils.md5Hex(Config.get("user.password.salt") + passWord).equals(user.getPassWord())) {
             //判断用户的账户状态
             if (user.getState().equals(User.USERSTATE_ACTIVE)) {
-                //记录登陆日志
+                //记录登录日志
                 LoginLog log = new LoginLog();
                 log.setIp(ip);
                 log.setUserId(user.getId());
-
                 loginLogDao.save(log);
 
                 logger.info("{}登录了系统,IP:{}", userName, ip);
@@ -144,8 +151,47 @@ public class UserService {
             } else {
                 throw new ServiceException("帐号被禁用");
             }
-        }else{
+        } else {
             throw new ServiceException("账号或密码错误");
+        }
+    }
+
+    /**
+     * 用户找回密码发送邮件链接操作
+     *
+     * @param sessionId 客户端sessionId，限制客户端的操作频率
+     * @param type      找回密码的方式   email ||  phone
+     * @param value     电子邮件地址 | 手机号码
+     */
+    public void foundPassWord(String sessionId, String type, String value) {
+        //判断用户操作间隔是否正常
+        if (activeCache.getIfPresent(sessionId) == null) {
+            //判断用户找回密码的方式 email | phone
+            if ("phone".equals(type)) {
+                //TODO 发送验证码
+            } else if ("email".equals(type)) {
+                //根据邮件地址查找该邮件对应的用户信息
+                User user = userDao.findByEmail(value);
+                if (user != null) {
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String uuid = UUID.randomUUID().toString();
+                            String url = "http://www.aaa.com/user/rspassword?_=" + uuid;
+
+                            fondCache.put(uuid, user.getUserName());
+                            String html = user.getUserName() + "<br>请点击该<a href='" + url + "'>链接</a>进行找回密码操作，链接在30分钟内有效";
+                            EmailUtil.sendHtmlEmail(value, "密码找回邮件", html);
+                        }
+                    });
+                    thread.start();
+                } else {
+                    throw new ServiceException("用户不存在");
+                }
+            }
+            activeCache.put(sessionId, "占位，无意义");
+        } else {
+            throw new ServiceException("操作频率过快");
         }
     }
 }
