@@ -15,33 +15,9 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-<div class="header-bar">
-    <div class="container">
-        <a href="#" class="brand">
-            <i class="fa fa-reddit-alien"></i>
-        </a>
-        <ul class="unstyled inline pull-right">
-            <li>
-                <a href="#">
-                    <img src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/20/h/20" class="img-circle" alt="">
-                </a>
-            </li>
-            <li>
-                <a href=""><i class="fa fa-plus"></i></a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-bell"></i></a>
-            </li>
-            <li>
-                <a href="setting.html"><i class="fa fa-cog"></i></a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-sign-out"></i></a>
-            </li>
-        </ul>
-    </div>
-</div>
-<!--header-bar end-->
+
+<%@include file="./include/navbar.jsp" %>
+
 <div class="container">
     <div class="box">
         <div class="talk-item">
@@ -56,7 +32,7 @@
             <table class="talk-table">
                 <tr>
                     <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
+                        <img class="avatar" src="http://oi245j9g2.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD.jpg?imageView2/1/w/40/h/40" alt="">
                     </td>
                     <td width="80">
                         <a href="">fankay</a>

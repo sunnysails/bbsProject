@@ -58,11 +58,11 @@ $(function () {
                 digits: "手机号码中不能包含非数字内容"
             }
         },
-        submitHandler: function () {
+        submitHandler: function (form) {
             $.ajax({
                 url: "/reg",
                 type: "post",
-                data: $("#regForm").serialize(),
+                data: $(form).serialize(),
                 beforeSend: function () {
                     $("#regBtn").text("注册中...").attr("disabled", "disabled")
                 },
