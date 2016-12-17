@@ -32,4 +32,10 @@ public class UserDao {
         String sql = "SELECT * FROM t_user WHERE email = ?";
         return DbHelp.query(sql, new BeanHandler<User>(User.class), email);
     }
+
+    //更改账户信息
+    public void update(User user) {
+        String sql = "update t_user set password=?,email=?,phone=?,state=?,avatar=? where id = ?";
+        DbHelp.update(sql, user.getPassWord(), user.getEmail(), user.getPhone(), user.getState(), user.getAvatar(), user.getId());
+    }
 }

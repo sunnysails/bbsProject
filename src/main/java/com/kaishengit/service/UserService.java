@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.kaishengit.dao.UserDao;
 import com.kaishengit.entity.User;
+import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import com.kaishengit.util.EmailUtil;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -25,6 +26,28 @@ public class UserService {
     private static Cache<String, String > cache = CacheBuilder.newBuilder()
             .expireAfterWrite(6, TimeUnit.HOURS)
             .build();
+
+    /**
+     *
+     * @param token 根据激活邮件种URL 的token 值激活对应的用户
+     * @return
+     */
+    public void activeUser(String token){
+        String userName = cache.getIfPresent(token);
+        if (userName == null){
+            throw new ServiceException("token无效或链接已过期");
+        }else{
+            User user = userDao.findByUserName(userName);
+            if (user == null) {
+                throw new ServiceException("无法找到对应账号");
+            }else{
+                user.setState(User.USERSTATE_ACTIVE);
+                userDao.update(user);
+                //将缓存中的键值对删除
+                cache.invalidate(token);
+            }
+        }
+    }
 
     /**
      * 校检用户名是否被占用
@@ -76,10 +99,10 @@ public class UserService {
             public void run() {
                 //多线程后台给用户发送电子邮件
                 String uuid = UUID.randomUUID().toString();
-                String url = "http://www.aaa.com/user/active?_=" + uuid;
+                String url = "http://www.aaa.com/user/active?_="+uuid;
                 //放入缓存并等待6小时
                 cache.put(uuid, userName);
-                String html = "<h3>Dear " + userName + ":</h3>请点击<a href='" + url + "'>该链接</a>去激活你的账号. <br> sun";
+                String html = "<h3>Dear "+userName+":</h3>请点击<a href='"+url+"'>该链接</a>去激活你的账号. <br> sun";
 
                 EmailUtil.sendHtmlEmail(email,"用户激活邮件",html);
             }

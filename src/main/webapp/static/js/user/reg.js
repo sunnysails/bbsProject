@@ -66,7 +66,7 @@ $(function () {
                 beforeSend: function () {
                     $("#regBtn").text("注册中...").attr("disabled", "disabled")
                 },
-                success: function () {
+                success: function (data) {
                     if (data.state == 'success') {
                         alert("注册成功，请查收激活邮件。");
                         window.location.href = "/login";
