@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 public class EmailUtil {
     private static Logger logger = LoggerFactory.getLogger(EmailUtil.class);
 
+    /**
+     *
+     * @param toAddress
+     * @param subject
+     * @param context
+     */
     public static void sendHtmlEmail(String toAddress, String subject, String context) {
         HtmlEmail htmlEmail = new HtmlEmail();
         htmlEmail.setHostName(Config.get("email.smpt"));

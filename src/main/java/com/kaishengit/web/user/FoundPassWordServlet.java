@@ -34,10 +34,10 @@ public class FoundPassWordServlet extends BaseServlet {
         try {
             userService.foundPassWord(sessionId, type, value);
             result.put("state", "success");
-        }catch (ServiceException e){
-            result.put("state","error");
-            result.put("message",e.getMessage());
+        } catch (ServiceException e) {
+            result.put("state", "error");
+            result.put("message", e.getMessage());
         }
-        renderJSON(result,resp);
+        renderJSON(result, resp);
     }
 }

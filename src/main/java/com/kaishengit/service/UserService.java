@@ -9,6 +9,7 @@ import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import com.kaishengit.util.EmailUtil;
+import com.kaishengit.util.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class UserService {
             .build();
     //发送找回密码的TOKEN缓存
     private static Cache<String, String> fondCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(30, TimeUnit.MILLISECONDS)
+            .expireAfterWrite(30, TimeUnit.MINUTES)
             .build();
     //限制操作频率的缓存
     private static Cache<String, String> activeCache = CacheBuilder.newBuilder()
@@ -177,7 +178,7 @@ public class UserService {
                         @Override
                         public void run() {
                             String uuid = UUID.randomUUID().toString();
-                            String url = "http://www.aaa.com/user/rspassword?_=" + uuid;
+                            String url = "http://www.aaa.com/user/restpassword?token=" + uuid;
 
                             fondCache.put(uuid, user.getUserName());
                             String html = user.getUserName() + "<br>请点击该<a href='" + url + "'>链接</a>进行找回密码操作，链接在30分钟内有效";
@@ -192,6 +193,45 @@ public class UserService {
             activeCache.put(sessionId, "占位，无意义");
         } else {
             throw new ServiceException("操作频率过快");
+        }
+    }
+
+    /**
+     * 根据找回密码的链接获取找回密码的用户
+     *
+     * @param token
+     * @return
+     */
+    public User foundPasswordGetUserByToken(String token) {
+        String userName = fondCache.getIfPresent(token);
+        if (StringUtils.isEmpty(userName)) {
+            throw new ServiceException("token过期或不存在");
+        } else {
+            User user = userDao.findByUserName(userName);
+            if (user == null) {
+                throw new ServiceException("未找到对应的账户，请检查后重试");
+            } else {
+                return user;
+            }
+        }
+    }
+
+    /**
+     * 用户密码重置
+     *
+     * @param id       用户ID
+     * @param token    找回密码的TOKEN值
+     * @param passWord 用户设置的新密码
+     */
+    public void restPassWord(String id, String token, String passWord) {
+        if (fondCache.getIfPresent(token) == null) {
+            throw new ServiceException("token已过期或链接已失效");
+        } else {
+            User user = userDao.findById(Integer.valueOf(id));
+            user.setPassWord(DigestUtils.md5Hex(Config.get("user.password.salt") + passWord));
+            userDao.update(user);
+
+            logger.info("{}重置了密码", user.getUserName());
         }
     }
 }

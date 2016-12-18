@@ -25,10 +25,10 @@
                     <li><a href=""><i class="fa fa-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-bell"></i></a></li>
                     <li><a href="#"><i class="fa fa-cog"></i></a></li>
-                    <li><a href="#"><i class="fa fa-sign-out"></i></a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out"></i></a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a href="#"><i class="fa fa-sign-in"></i></a></li>
+                    <li><a href="/login"><i class="fa fa-sign-in"></i></a></li>
                 </c:otherwise>
             </c:choose>
         </ul>
