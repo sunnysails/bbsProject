@@ -44,7 +44,9 @@ public class UserService {
             .build();
 
     /**
-     * @param token 根据激活邮件种URL 的token 值激活对应的用户
+     * 根据激活邮件种URL 的token 值激活对应的用户
+     *
+     * @param token
      * @return
      */
     public void activeUser(String token) {
@@ -60,6 +62,7 @@ public class UserService {
                 userDao.update(user);
                 //将缓存中的键值对删除
                 cache.invalidate(token);
+                logger.info("{}激活了账号", user.getUserName());
             }
         }
     }
@@ -181,8 +184,11 @@ public class UserService {
                             String url = "http://www.aaa.com/user/restpassword?token=" + uuid;
 
                             fondCache.put(uuid, user.getUserName());
+
                             String html = user.getUserName() + "<br>请点击该<a href='" + url + "'>链接</a>进行找回密码操作，链接在30分钟内有效";
                             EmailUtil.sendHtmlEmail(value, "密码找回邮件", html);
+
+                            logger.info("{}使用了通过邮件找回密码功能", user.getUserName());
                         }
                     });
                     thread.start();

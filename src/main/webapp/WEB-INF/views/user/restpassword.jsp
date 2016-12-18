@@ -41,6 +41,8 @@
 
             <div class="form-actions">
                 <button id="restBtn" type="button" class="btn btn-primary">确定</button>
+
+                <a class="pull-right" href="/login">取消</a>
             </div>
         </form>
     </div>

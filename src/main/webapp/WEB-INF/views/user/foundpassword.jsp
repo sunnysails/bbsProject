@@ -42,6 +42,8 @@
 
             <div class="form-actions">
                 <button id="btn" type="button" class="btn btn-primary">提交</button>
+
+                <a class="pull-right" href="/login">取消</a>
             </div>
         </form>
     </div>

@@ -12,7 +12,6 @@ public class EmailUtil {
     private static Logger logger = LoggerFactory.getLogger(EmailUtil.class);
 
     /**
-     *
      * @param toAddress
      * @param subject
      * @param context
@@ -31,8 +30,10 @@ public class EmailUtil {
             htmlEmail.addTo(toAddress);
 
             htmlEmail.send();
-        } catch (EmailException ex){
-            logger.error("向{}发送邮件失败",toAddress);
+            logger.info("向:{},发送邮件", toAddress);
+        } catch (EmailException ex) {
+
+            logger.error("向{}发送邮件失败", toAddress);
             throw new RuntimeException("发送邮件失败:" + toAddress);
         }
     }

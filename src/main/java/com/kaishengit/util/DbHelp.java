@@ -26,6 +26,7 @@ public class DbHelp {
 
             logger.debug("SQL: {}", sql);
         } catch (SQLException ex) {
+
             logger.error("执行{}异常", sql);
             throw new DataAccessException("执行" + sql + "异常", ex);
         }
@@ -40,6 +41,7 @@ public class DbHelp {
             logger.debug("SQL: {}", sql);
             return t;
         } catch (SQLException e) {
+
             logger.error("执行{}异常", sql);
             throw new DataAccessException("执行" + sql + "异常", e);
         }
@@ -50,6 +52,7 @@ public class DbHelp {
             try {
                 connection.close();
             } catch (SQLException e) {
+
                 logger.error("关闭Connection异常");
                 throw new DataAccessException("关闭Connection异常", e);
             }
