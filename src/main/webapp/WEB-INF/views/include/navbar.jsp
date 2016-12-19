@@ -14,20 +14,26 @@
             <i class="fa fa-reddit-alien"></i>
         </a>
         <ul class="unstyled inline pull-right">
-            <li>
-                <a href="#">
-                    <img src="http://oi245j9g2.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD.jpg?imageView2/1/w/20/h/20"
-                         class="img-circle" alt="">
-                </a>
-            </li>
             <c:choose>
-                <c:when test="${not empty sessionScope}">
+                <c:when test="${not empty sessionScope.curr_user}">
+                    <li>
+                        <a href="/setting">
+                            <img src="http://ohwnpkfcx.bkt.clouddn.com/${sessionScope.curr_user.avatar}?imageView2/1/w/20/h/20"
+                                 class="img-circle" alt="">
+                        </a>
+                    </li>
                     <li><a href=""><i class="fa fa-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-bell"></i></a></li>
-                    <li><a href="#"><i class="fa fa-cog"></i></a></li>
+                    <li><a href="/setting"><i class="fa fa-cog"></i></a></li>
                     <li><a href="/logout"><i class="fa fa-sign-out"></i></a></li>
                 </c:when>
                 <c:otherwise>
+                    <li>
+                        <a href="/setting">
+                            <img src="http://oi245j9g2.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD.jpg?imageView2/1/w/20/h/20"
+                                 class="img-circle" alt="">
+                        </a>
+                    </li>
                     <li><a href="/login"><i class="fa fa-sign-in"></i></a></li>
                 </c:otherwise>
             </c:choose>

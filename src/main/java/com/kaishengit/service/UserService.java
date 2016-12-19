@@ -237,7 +237,41 @@ public class UserService {
             user.setPassWord(DigestUtils.md5Hex(Config.get("user.password.salt") + passWord));
             userDao.update(user);
 
+            //删除作为验证的TOKEN值。
+            fondCache.invalidate(token);
             logger.info("{}重置了密码", user.getUserName());
+        }
+    }
+
+    /**
+     * 更改已登录用户email
+     *
+     * @param user  更改邮箱的用户
+     * @param email 新邮箱
+     */
+    public void updateEmail(User user, String email) {
+        user.setEmail(email);
+        userDao.update(user);
+
+        logger.info("用户：{}，更改了新邮箱", user.getUserName());
+    }
+
+    /**
+     * 更改已登录用户密码
+     *
+     * @param user        用户
+     * @param oldPassWord 旧密码
+     * @param newPassWord 新密码
+     */
+    public void updatePassWord(User user, String oldPassWord, String newPassWord) {
+        if (DigestUtils.md5Hex(Config.get("user.password.salt") + oldPassWord).equals(user.getPassWord())) {
+            newPassWord = DigestUtils.md5Hex(Config.get("user.password.salt") + newPassWord);
+            user.setPassWord(newPassWord);
+            userDao.update(user);
+
+            logger.info("用户：{}，更改了密码", user.getUserName());
+        } else {
+            throw new ServiceException("原始密码错误,操作失败，请检查后重试");
         }
     }
 }

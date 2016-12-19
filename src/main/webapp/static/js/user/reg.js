@@ -50,7 +50,8 @@ $(function () {
             },
             email: {
                 required: "请输入电子邮件",
-                email: "请输入有效的电子邮件地址"
+                email: "请输入有效的电子邮件地址",
+                remote:"电子邮件已被占用"
             },
             phone: {
                 required: "请输入11位电话号码",
