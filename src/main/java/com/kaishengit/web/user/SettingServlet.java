@@ -5,7 +5,9 @@ import com.kaishengit.dto.JsonResult;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.service.UserService;
+import com.kaishengit.util.Config;
 import com.kaishengit.web.BaseServlet;
+import com.qiniu.util.Auth;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +23,11 @@ import java.util.Map;
 public class SettingServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //七牛云存储的TOKEN
+        Auth auth = Auth.create(Config.get("qiniu.ak"), Config.get("qiniu.sk"));
+        String token = auth.uploadToken(Config.get("qiniu.bucket"));
+
+        req.setAttribute("token", token);
         forWord("user/setting", req, resp);
     }
 
@@ -31,7 +38,22 @@ public class SettingServlet extends BaseServlet {
             updateProfile(req, resp);
         } else if ("password".equals(action)) {
             updatePassword(req, resp);
+        } else if ("avatar".equals(action)) {
+            updateAvatar(req, resp);
         }
+    }
+
+    //更改头像
+    private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String fileKey = req.getParameter("fileKey");
+        User user = getCurrentUser(req);
+
+        UserService userService = new UserService();
+        userService.updateAvatar(user, fileKey);
+
+        JsonResult result = new JsonResult();
+        result.setState(JsonResult.SUCCESS);
+        renderJSON(result, resp);
     }
 
     //修改密码

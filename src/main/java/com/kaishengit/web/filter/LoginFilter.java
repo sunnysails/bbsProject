@@ -27,15 +27,15 @@ public class LoginFilter extends AbstractFilter {
         //获取用户要访问的URL，
         String requestUrl = req.getRequestURI();
 
-        if (urlList != null && urlList.contains(requestUrl)){
-            if (req.getSession().getAttribute("curr_user") == null){
-            //去登录页面
-            resp.sendRedirect("/login?redirect="+requestUrl);
-            }else{
-                filterChain.doFilter(req,resp);
+        if (urlList != null && urlList.contains(requestUrl)) {
+            if (req.getSession().getAttribute("curr_user") == null) {
+                //去登录页面
+                resp.sendRedirect("/login?redirect=" + requestUrl);
+            } else {
+                filterChain.doFilter(req, resp);
             }
-        }else {
-            filterChain.doFilter(req,resp);
+        } else {
+            filterChain.doFilter(req, resp);
         }
     }
 }

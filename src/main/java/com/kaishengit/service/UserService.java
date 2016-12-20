@@ -274,4 +274,17 @@ public class UserService {
             throw new ServiceException("原始密码错误,操作失败，请检查后重试");
         }
     }
+
+    /**
+     * 更改头像
+     *
+     * @param user    用户
+     * @param fileKey 文件名
+     */
+    public void updateAvatar(User user, String fileKey) {
+        user.setAvatar(fileKey);
+        userDao.update(user);
+
+        logger.info("用户{}更改了头像", user.getUserName());
+    }
 }
