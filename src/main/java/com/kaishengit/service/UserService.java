@@ -10,6 +10,10 @@ import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import com.kaishengit.util.EmailUtil;
 import com.kaishengit.util.StringUtils;
+import com.qiniu.common.Zone;
+import com.qiniu.storage.BucketManager;
+import com.qiniu.storage.Configuration;
+import com.qiniu.util.Auth;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -282,9 +286,17 @@ public class UserService {
      * @param fileKey 文件名
      */
     public void updateAvatar(User user, String fileKey) {
+
+        Auth auth = Auth.create(Config.get("qiniu.ak"), Config.get("qiniu.sk"));
+        Zone z = Zone.zone0();
+        Configuration configuration = new Configuration(z);
+        BucketManager bucketManager = new BucketManager(auth,configuration);
+
+        QiNiuService qiNiuService = new QiNiuService();
+        qiNiuService.qiNiuDelete(bucketManager,Config.get("qiniu.bucket"),user.getAvatar());
+
         user.setAvatar(fileKey);
         userDao.update(user);
-
         logger.info("用户{}更改了头像", user.getUserName());
     }
 }

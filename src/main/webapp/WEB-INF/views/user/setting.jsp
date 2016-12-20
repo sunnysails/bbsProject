@@ -120,11 +120,11 @@
             auto: true,
             fileVal: 'file',
             formData: {"token": "${token}"},
-            accept: {
-                title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
-                mimeTypes: 'image/!*'
-            }
+//            accept: {
+//                title: 'Images',
+//                extensions: 'gif,jpg,jpeg,bmp,png',
+//                mimeTypes: 'image/!*'
+//            }
         });
         //上传成功
         uploder.on('uploadSuccess', function (file, data) {

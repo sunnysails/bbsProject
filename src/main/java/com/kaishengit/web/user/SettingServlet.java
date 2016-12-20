@@ -1,6 +1,5 @@
 package com.kaishengit.web.user;
 
-import com.google.common.collect.Maps;
 import com.kaishengit.dto.JsonResult;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
@@ -14,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by sunny on 2016/12/19.
