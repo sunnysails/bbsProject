@@ -14,7 +14,7 @@
         </encoder>
     </appender>-->
 
-    <property name="LOG_HOME" value="D:/logs"/>
+    <property name="LOG_HOME" value="E:/logs"/>
 
     <appender name="dailyOut" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
