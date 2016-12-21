@@ -109,7 +109,9 @@
 <script src="/static/js/jquery-1.11.1.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/static/js/uploader/webuploader.min.js"></script>
+<script src="/static/js/dist/sweetalert-dev.js"></script>
 <script src="/static/js/user/setting.js"></script>
+<link rel="stylesheet" href="/static/js/dist/sweetalert.css">
 <script>
     $(function () {
         //头像上传
@@ -139,12 +141,12 @@
                     }
                 })
                 .error(function () {
-                    alert("头像设置失败");
+                    swal("头像设置失败","error");
                 });
         });
         //上传失败
         uploder.on('uploadError', function () {
-            alert("上传失败，请稍候再试");
+            swal("上传失败，请稍候再试","error");
         });
     });
 </script>

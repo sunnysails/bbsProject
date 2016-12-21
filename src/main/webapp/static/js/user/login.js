@@ -48,15 +48,17 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == 'success') {
-                        alert("登录成功");
-                        var url = getParameterByName("redirect");
-                        if (url) {
-                            window.location.href = url;
-                        } else {
-                            window.location.href = "/home";
-                        }
+                        swal("登录成功!", "欢迎您!", "success",function () {
+                            var url = getParameterByName("redirect");
+                            if (url) {
+                                window.location.href = url;
+                            } else {
+                                window.location.href = "/home";
+                            }
+                        });
                     } else {
-                        alert(data.message)
+                        // alert(data.message)
+                        swal(data.message, "error");
                     }
                 },
                 error: function () {

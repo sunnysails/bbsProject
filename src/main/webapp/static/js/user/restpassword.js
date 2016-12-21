@@ -7,50 +7,51 @@ $(function () {
     });
 
     $("#restForm").validate({
-        errorElement:'span',
-        errorClass:'text-error',
-        rules:{
-            passWord:{
-                required:true,
-                rangelength:[6,18]
+        errorElement: 'span',
+        errorClass: 'text-error',
+        rules: {
+            passWord: {
+                required: true,
+                rangelength: [6, 18]
             },
-            rePassWord:{
-                required:true,
-                rangelength:[6,18],
-                equalTo:"#passWord"
+            rePassWord: {
+                required: true,
+                rangelength: [6, 18],
+                equalTo: "#passWord"
             }
         },
-        messages:{
-            passWord:{
-                required:"请输入密码",
-                rangelength:"密码长度6-18个字符"
+        messages: {
+            passWord: {
+                required: "请输入密码",
+                rangelength: "密码长度6-18个字符"
             },
-            rePassWord:{
-                required:"请输入确认密码",
-                rangelength:"密码长度6-18个字符",
-                equalTo:"两次密码不一致"
+            rePassWord: {
+                required: "请输入确认密码",
+                rangelength: "密码长度6-18个字符",
+                equalTo: "两次密码不一致"
             }
         },
-        submitHandler:function (form) {
+        submitHandler: function (form) {
             $.ajax({
-                url:"/user/restpassword",
-                type:"post",
-                data:$(form).serialize(),
-                beforeSend:function(){
-                    $("#restBtn").text("保存中...").attr("disabled","disabled");
+                url: "/user/restpassword",
+                type: "post",
+                data: $(form).serialize(),
+                beforeSend: function () {
+                    $("#restBtn").text("保存中...").attr("disabled", "disabled");
                 },
-                success:function(data){
-                    if(data.state == 'success') {
-                        alert("密码重置成功,请登录");
-                        window.location.href = "/login";
+                success: function (data) {
+                    if (data.state == 'success') {
+                        swal("密码重置成功,请重新登录", function () {
+                            window.location.href = "/login";
+                        });
                     } else {
-                        alert(data.message);
+                        swal(data.message, "error");
                     }
                 },
-                error:function(){
-                    alert("服务器错误");
+                error: function () {
+                    swal("服务器错误", "error");
                 },
-                complete:function(){
+                complete: function () {
                     $("#restBtn").text("保存").removeAttr("disabled");
                 }
             });

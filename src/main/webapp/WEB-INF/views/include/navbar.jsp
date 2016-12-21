@@ -22,7 +22,7 @@
                                  class="img-circle" alt="">
                         </a>
                     </li>
-                    <li><a href=""><i class="fa fa-plus"></i></a></li>
+                    <li><a href="/newtopic"><i class="fa fa-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-bell"></i></a></li>
                     <li><a href="/setting"><i class="fa fa-cog"></i></a></li>
                     <li><a href="/logout"><i class="fa fa-sign-out"></i></a></li>

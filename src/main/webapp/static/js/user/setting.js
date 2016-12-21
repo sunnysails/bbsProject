@@ -34,11 +34,11 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == "success") {
-                        alert("修改成功");
+                        swal("修改成功","success");
                     }
                 },
                 error: function () {
-                    alert("服务器错误");
+                    swal("服务器错误");
                 },
                 complete: function () {
                     $("#basicBtn").text("保存").removeAttr("disabled");
@@ -95,14 +95,15 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == "success") {
-                        alert("密码修改成功，请重新登录");
-                        window.location.href = "/login";
+                        swal("密码修改成功，请重新登录","success",function () {
+                            window.location.href = "/login";
+                        });
                     } else {
-                        alert(data.message);
+                        swal(data.message,"error");
                     }
                 },
                 error: function () {
-                    alert("服务器错误");
+                    swal("服务器错误","error");
                 },
                 complete: function () {
                     $("#setPSBtn").text("保存").removeAttr("disabled");

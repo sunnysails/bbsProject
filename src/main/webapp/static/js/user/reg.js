@@ -51,7 +51,7 @@ $(function () {
             email: {
                 required: "请输入电子邮件",
                 email: "请输入有效的电子邮件地址",
-                remote:"电子邮件已被占用"
+                remote: "电子邮件已被占用"
             },
             phone: {
                 required: "请输入11位电话号码",
@@ -69,14 +69,15 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == 'success') {
-                        alert("注册成功，请查收激活邮件。");
-                        window.location.href = "/login";
+                        swal("注册成功!", "请到邮箱查收您的激活邮件!", "success", function () {
+                            window.location.href = "/login";
+                        });
                     } else {
-                        alert(data.massage);
+                        swal(data.message, "error");
                     }
                 },
                 error: function () {
-                    alert("服务器错误");
+                    swal("服务器错误", "error");
                 },
                 complete: function () {
                     $("#regBtn").text("注册").removeAttr("disable");
