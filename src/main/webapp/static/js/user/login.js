@@ -52,6 +52,8 @@ $(function () {
                                 title: "登录成功",
                                 text: "欢迎您!",
                                 type: "success",
+                                timer: 2000,
+                                showConfirmButton: false,
                                 showCancelButton: false,
                                 confirmButtonColor: "#159492",
                                 confirmButtonText: "OK!",

@@ -12,7 +12,6 @@ import com.kaishengit.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,17 +34,14 @@ public class TopicService {
         return nodeDao.findAll();
     }
 
+    /**
+     * 查询所有帖子信息，并返回完整的topic对象集合（包含user，node信息）。
+     *
+     * @return topic 集合
+     */
     public List<Topic> findAllTopic() {
 
         List<Topic> topicList = topicDao.findAll();
-        for (Topic topic : topicList
-                ) {
-            User user = userDao.findById(topic.getUserId());
-            Node node = nodeDao.findById(topic.getNodeId());
-            user.setAvatar(Config.get("qiniu.domain") + user.getAvatar());
-            topic.setUser(user);
-            topic.setNode(node);
-        }
 
         logger.debug("查询所有帖子信息");
         return topicList;
@@ -61,6 +57,7 @@ public class TopicService {
      * @return Topic对象
      */
     public Topic addNewTopic(String title, String content, Integer nodeId, Integer userId) {
+        //封装对象topic
         Topic topic = new Topic();
         topic.setTitle(title);
         topic.setContent(content);
@@ -69,7 +66,16 @@ public class TopicService {
         Integer topicId = topicDao.save(topic);
         topic.setId(topicId);
 
-        logger.info("{}发表了帖子，时间为{}，主题为：{}", topic.getUser().getUserName(), topic.getCreateTime(), title);
+        //更新node表的topicnum
+        Node node = nodeDao.findById(nodeId);
+        if (node != null) {
+            node.setTopicNum(node.getTopicNum() + 1);
+            nodeDao.save(node);
+        } else {
+            throw new ServiceException("论坛板块不存在");
+        }
+
+        logger.info("Id为{}在{}板块ID：{}发表了主题为：{}帖子", userId, topic.getCreateTime(), nodeId, title);
         return topic;
     }
 
