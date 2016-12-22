@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,7 @@
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/js/editer/styles/simditor.css">
+    <link rel="stylesheet" href="/static/js/dist/sweetalert.css">
     <style>
         body{
             background-image: url(/static/img/bg.jpg);
@@ -30,17 +32,16 @@
 <div class="container">
     <div class="box">
         <ul class="breadcrumb" style="background-color: #fff;margin-bottom: 0px;">
-            <li><a href="#">首页</a> <span class="divider">/</span></li>
-            <li class="active">问与答</li>
+            <li><a href="/home">首页</a> <span class="divider">/</span></li>
+            <li class="active">${requestScope.topic.node.nodeName}</li>
         </ul>
         <div class="topic-head">
-            <img class="img-rounded avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/60/h/60" alt="">
-            <h3 class="title">你们怎么发 git 的音？</h3>
-            <p class="topic-msg muted"><a href="">fankay</a> · 9小时前</p>
+            <img class="img-rounded avatar" src="${requestScope.topic.user.avatar}?imageView2/1/w/60/h/60" alt="">
+            <h3 class="title">${requestScope.toric.title}</h3>
+            <p class="topic-msg muted"><a href="">${requestScope.topic.user.userName}</a> · ${requestScope.topic.createTime}</p>
         </div>
         <div class="topic-body">
-            <p>AngularJS is an MVC framework for building web applications. The core features include HTML enhanced with custom component and data-binding capabilities, dependency injection and strong focus on simplicity, testability, maintainability and boiler-plate reduction.</p>
-            <p>下载之前先检查一下是否准备好了一个代码编辑器(我们推荐使用 Sublime Text 2) ，你是否已经掌握了足够的HTML和CSS知识以开展工作。这里我们不详述源码文件，但是它们可以随时被下载。在这里我们只着重介绍使用已经编译好的Bootstrap文件进行入门讲解。</p>
+            ${requestScope.topic.content}
         </div>
         <div class="topic-toolbar">
             <ul class="unstyled inline pull-left">
@@ -119,6 +120,7 @@
 <script src="/static/js/editer/scripts/hotkeys.min.js"></script>
 <script src="/static/js/editer/scripts/uploader.min.js"></script>
 <script src="/static/js/editer/scripts/simditor.min.js"></script>
+<script src="/static/js/dist/sweetalert-dev.js"></script>
 <script>
     $(function(){
         var editor = new Simditor({

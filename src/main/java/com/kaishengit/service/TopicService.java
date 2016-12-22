@@ -5,9 +5,14 @@ import com.kaishengit.dao.TopicDao;
 import com.kaishengit.dao.UserDao;
 import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
+import com.kaishengit.entity.User;
+import com.kaishengit.exception.ServiceException;
+import com.kaishengit.util.Config;
+import com.kaishengit.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +31,24 @@ public class TopicService {
      * @return 论坛版块清单，nodeList
      */
     public List<Node> findAllNode() {
-
         logger.debug("查询了所有板块信息");
-        return nodeDao.findAllNode();
+        return nodeDao.findAll();
+    }
+
+    public List<Topic> findAllTopic() {
+
+        List<Topic> topicList = topicDao.findAll();
+        for (Topic topic : topicList
+                ) {
+            User user = userDao.findById(topic.getUserId());
+            Node node = nodeDao.findById(topic.getNodeId());
+            user.setAvatar(Config.get("qiniu.domain") + user.getAvatar());
+            topic.setUser(user);
+            topic.setNode(node);
+        }
+
+        logger.debug("查询所有帖子信息");
+        return topicList;
     }
 
     /**
@@ -48,6 +68,35 @@ public class TopicService {
         topic.setUserId(userId);
         Integer topicId = topicDao.save(topic);
         topic.setId(topicId);
+
+        logger.info("{}发表了帖子，时间为{}，主题为：{}", topic.getUser().getUserName(), topic.getCreateTime(), title);
         return topic;
+    }
+
+    /**
+     * 根据Id 查询帖子,判断参数是否正确，判断帖子是否存在。
+     *
+     * @param topicId
+     * @return
+     */
+    public Topic findTopicById(String topicId) {
+        if (StringUtils.isNumeric(topicId)) {
+            Topic topic = topicDao.findById(topicId);
+            if (topic != null) {
+                User user = userDao.findById(topic.getUserId());
+                Node node = nodeDao.findById(topic.getNodeId());
+                user.setAvatar(Config.get("qiniu.domain") + user.getAvatar());
+                topic.setUser(user);
+                topic.setNode(node);
+
+                logger.debug("{}查看了帖子，时间为{}，主题为：{}", topic.getUser().getUserName(), topic.getCreateTime(), topic.getTitle());
+                //TODO  bug 待调整，logger错误。
+                return topic;
+            } else {
+                throw new ServiceException("该帖子不存在，或已被删除");
+            }
+        } else {
+            throw new ServiceException("参数错误！");
+        }
     }
 }

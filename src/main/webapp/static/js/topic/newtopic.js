@@ -35,7 +35,7 @@ $(function () {
                 },
                 success: function (json) {
                     if (json.state == "success") {
-                        window.location.href = "/topicDetail?topicid=" + json.data.id;
+                        window.location.href = "/topicdetail?topicId=" + json.data.id;
                     } else {
                         swal("新增主题异常", "", "error");
                     }
