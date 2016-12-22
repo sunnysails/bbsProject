@@ -88,7 +88,7 @@
                 <label class="control-label">当前头像</label>
                 <div class="controls">
                     <img id="avatar"
-                         src="http://oi245j9g2.bkt.clouddn.com/${sessionScope.curr_user.avatar}?imageView2/1/w/40/h/40"
+                         src="http://oi245j9g2.bkt.clouddn.com/${sessionScope.curr_user.avatar}?imageView2/1/w/80/h/80"
                          class="img-circle" alt="">
                 </div>
             </div>
@@ -136,17 +136,17 @@
                 .done(function (data) {
                     if (data.state == 'success') {
                         var url = "http://oi245j9g2.bkt.clouddn.com/" + fileKey;
-                        $("#avatar").attr("src", url + "?imageView2/1/w/40/h/40");
+                        $("#avatar").attr("src", url + "?imageView2/1/w/80/h/80");
                         $("#navbar_avatar").attr("src", url + "?imageView2/1/w/20/h/20");
                     }
                 })
                 .error(function () {
-                    swal("头像设置失败","error");
+                    swal("头像设置失败", "", "error");
                 });
         });
         //上传失败
         uploder.on('uploadError', function () {
-            swal("上传失败，请稍候再试","error");
+            swal("上传失败，请稍候再试", "", "error");
         });
     });
 </script>

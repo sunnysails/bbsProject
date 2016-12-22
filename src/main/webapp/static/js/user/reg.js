@@ -69,15 +69,24 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == 'success') {
-                        swal("注册成功!", "请到邮箱查收您的激活邮件!", "success", function () {
-                            window.location.href = "/login";
-                        });
+                        swal({
+                                title: "注册成功",
+                                text: "请到邮箱查收您的激活邮件!",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#159492",
+                                confirmButtonText: "OK!",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                window.location.href = "/login";
+                            });
                     } else {
-                        swal(data.message, "error");
+                        swal(data.message, "", "error");
                     }
                 },
                 error: function () {
-                    swal("服务器错误", "error");
+                    swal("服务器错误", "", "error");
                 },
                 complete: function () {
                     $("#regBtn").text("注册").removeAttr("disable");

@@ -41,15 +41,23 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == 'success') {
-                        swal("密码重置成功,请重新登录", function () {
-                            window.location.href = "/login";
-                        });
+                        swal({
+                                title: "密码重置成功,请重新登录",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#159492",
+                                confirmButtonText: "OK!",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                window.location.href = "/login";
+                            });
                     } else {
-                        swal(data.message, "error");
+                        swal(data.message, "", "error");
                     }
                 },
                 error: function () {
-                    swal("服务器错误", "error");
+                    swal("服务器错误", "", "error");
                 },
                 complete: function () {
                     $("#restBtn").text("保存").removeAttr("disabled");

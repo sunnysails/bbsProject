@@ -48,21 +48,29 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.state == 'success') {
-                        swal("登录成功!", "欢迎您!", "success",function () {
-                            var url = getParameterByName("redirect");
-                            if (url) {
-                                window.location.href = url;
-                            } else {
-                                window.location.href = "/home";
-                            }
-                        });
+                        swal({
+                                title: "登录成功",
+                                text: "欢迎您!",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#159492",
+                                confirmButtonText: "OK!",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                var url = getParameterByName("redirect");
+                                if (url) {
+                                    window.location.href = url;
+                                } else {
+                                    window.location.href = "/home";
+                                }
+                            });
                     } else {
-                        // alert(data.message)
-                        swal(data.message, "error");
+                        swal(data.message, "", "error");
                     }
                 },
                 error: function () {
-                    alert("服务器错误")
+                    swal("服务器错误", "", "error")
                 },
                 complete: function () {
                     $("#loginBtn").text("登录").removeAttr("disable");
