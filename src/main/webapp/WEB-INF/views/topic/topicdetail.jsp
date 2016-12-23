@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,9 +19,10 @@
     <link rel="stylesheet" href="/static/js/editer/styles/simditor.css">
     <link rel="stylesheet" href="/static/js/dist/sweetalert.css">
     <style>
-        body{
+        body {
             background-image: url(/static/img/bg.jpg);
         }
+
         .simditor .simditor-body {
             min-height: 100px;
         }
@@ -38,7 +40,8 @@
         <div class="topic-head">
             <img class="img-rounded avatar" src="${requestScope.topic.user.avatar}?imageView2/1/w/60/h/60" alt="">
             <h3 class="title">${requestScope.toric.title}</h3>
-            <p class="topic-msg muted"><a href="">${requestScope.topic.user.userName}</a> · ${requestScope.topic.createTime}</p>
+            <p class="topic-msg muted"><a href="">${requestScope.topic.user.userName}</a>
+                · ${requestScope.topic.createTime}</p>
         </div>
         <div class="topic-body">
             ${requestScope.topic.content}
@@ -50,9 +53,9 @@
                 <li><a href=""></a></li>
             </ul>
             <ul class="unstyled inline pull-right muted">
-                <li>434次点击</li>
-                <li>8人收藏</li>
-                <li>2人感谢</li>
+                <li>${requestScope.topic.clickNum}次点击</li>
+                <li>${requestScope.topic.favNum}人收藏</li>
+                <li>${requestScope.topic.thankNum}人感谢</li>
             </ul>
         </div>
     </div>
@@ -60,35 +63,44 @@
 
     <div class="box" style="margin-top:20px;">
         <div class="talk-item muted" style="font-size: 12px">
-            9个回复 | 直到2015年12月25日 22:23:34
+            ${fn:length(replyList)}个回复 | 直到 <span id="lastReplyTime">${requestScope.topic.lastReplyTime}</span>
         </div>
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">1</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <%--TODO    bug 调试，不显示时间内容等参数--%>
+        <c:forEach items="${replyList}" var="reply">
+            <div class="talk-item">
+                <table class="talk-table">
+                    <tr>
+                        <td width="50">
+                            <img class="avatar"
+                                 src="${reply.user.avatar}?imageView2/1/w/40/h/40"
+                                 alt="">
+                        </td>
+                        <td width="auto">
+                            <a href="" style="font-size: 12px">${reply.user.userName}</a> <span style="font-size: 12px"
+                                                                                                class="reply">${reply.createTime}</span>
+                            <br>
+                            <p style="font-size: 14px">${reply.content}</p>
+                        </td>
+                        <td width="70" align="right" style="font-size: 12px">
+                            <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
+                            <span class="badge">1</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </c:forEach>
 
         <div class="talk-item">
             <table class="talk-table">
                 <tr>
                     <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
+                        <img class="avatar"
+                             src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40"
+                             alt="">
                     </td>
                     <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
+                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px"
+                                                                            class="reply">4小时前</span>
                         <br>
                         <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
                     </td>
@@ -101,18 +113,28 @@
         </div>
 
     </div>
-
-    <div class="box" style="margin:20px 0px;">
-        <div class="talk-item muted" style="font-size: 12px"><i class="fa fa-plus"></i> 添加一条新回复</div>
-        <form action="" style="padding: 15px;margin-bottom:0px;">
-            <textarea name="" id="editor"></textarea>
-        </form>
-        <div class="talk-item muted" style="text-align: right;font-size: 12px">
-            <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
-            <button class="btn btn-primary">发布</button>
-        </div>
-    </div>
-
+    <c:choose>
+        <c:when test="${not empty sessionScope.curr_user}">
+            <div class="box" style="margin:20px 0px;">
+                <a name="reply"></a>
+                <div class="talk-item muted" style="font-size: 12px"><i class="fa fa-plus"></i> 添加一条新回复</div>
+                <form id="replyForm" method="post" action="/newreply" style="padding: 15px;margin-bottom:0px;">
+                    <input name="topicId" type="hidden" value="${topic.id}">
+                    <textarea name="content" id="editor"></textarea>
+                </form>
+                <div class="talk-item muted" style="text-align: right;font-size: 12px">
+                    <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
+                    <button id="replyBtn" class="btn btn-primary">发布</button>
+                </div>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="box" style="margin:20px 0px;">
+                <div class="talk-item"> 请<a href="/login?redirect=topicdetail?topicId=${topic.id}#reply">登录</a>后再回复
+                </div>
+            </div>
+        </c:otherwise>
+    </c:choose>
 </div>
 <!--container end-->
 <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
@@ -121,15 +143,28 @@
 <script src="/static/js/editer/scripts/uploader.min.js"></script>
 <script src="/static/js/editer/scripts/simditor.min.js"></script>
 <script src="/static/js/dist/sweetalert-dev.js"></script>
+<script src="/static/js/highlight.pack.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.10.6/locale/zh-cn.js"></script>
 <script>
-    $(function(){
+    $(function () {
         var editor = new Simditor({
             textarea: $('#editor'),
-            toolbar:false
+            toolbar: false
             //optional options
+        });
+
+        $("#replyBtn").click(function () {
+            $("#replyForm").submit();
+        });
+
+        $("#topicTime").text(moment($("#topicTime").text()).fromNow());
+        $("#lastReplyTime").text(moment($("#lastReplyTime").text()).format("YYYY年MM月DD日 HH:mm:ss"));
+        $(".reply").text(function () {
+            var time = $(this).text();
+            return moment(time).fromNow();
         });
     });
 </script>
-
 </body>
 </html>

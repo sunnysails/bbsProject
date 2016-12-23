@@ -1,0 +1,36 @@
+package com.kaishengit.web.topic;
+
+import com.kaishengit.entity.User;
+import com.kaishengit.exception.ServiceException;
+import com.kaishengit.service.TopicService;
+import com.kaishengit.util.StringUtils;
+import com.kaishengit.web.BaseServlet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * Created by sunny on 2016/12/23.
+ */
+@WebServlet("/newreply")
+public class NewReplyServlet extends BaseServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String topicId = req.getParameter("topicId");
+        String content = req.getParameter("content");
+
+        User user = (User) req.getSession().getAttribute("curr_user");
+        TopicService topicService = new TopicService();
+        try {
+            topicService.addTopicReply(topicId, content, user);
+        } catch (ServiceException e) {
+            resp.sendError(404);
+            System.out.println(e.getMessage());
+            //TODO logger
+        }
+        resp.sendRedirect("/topicdetail?topicId="+topicId);
+    }
+}
