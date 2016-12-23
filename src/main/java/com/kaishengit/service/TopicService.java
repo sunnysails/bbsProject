@@ -1,17 +1,21 @@
 package com.kaishengit.service;
 
 import com.kaishengit.dao.NodeDao;
+import com.kaishengit.dao.ReplyDao;
 import com.kaishengit.dao.TopicDao;
 import com.kaishengit.dao.UserDao;
 import com.kaishengit.entity.Node;
+import com.kaishengit.entity.Reply;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import com.kaishengit.util.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -23,6 +27,7 @@ public class TopicService {
     private TopicDao topicDao = new TopicDao();
     private UserDao userDao = new UserDao();
     private NodeDao nodeDao = new NodeDao();
+    private ReplyDao replyDao = new ReplyDao();
 
     /**
      * 查找所有论坛版块
@@ -82,8 +87,8 @@ public class TopicService {
     /**
      * 根据Id 查询帖子,判断参数是否正确，判断帖子是否存在。
      *
-     * @param topicId
-     * @return
+     * @param topicId 需要查询的帖子的ID
+     * @return topic对象
      */
     public Topic findTopicById(String topicId) {
         if (StringUtils.isNumeric(topicId)) {
@@ -103,6 +108,52 @@ public class TopicService {
             }
         } else {
             throw new ServiceException("参数错误！");
+        }
+    }
+
+    /**
+     * 返回一个reply集合
+     *
+     * @param topicId 需要查询的帖子的ID
+     * @return replyList
+     */
+    public List<Reply> findReplyListByTopicId(String topicId) {
+        return replyDao.findListByTopicId(topicId);
+    }
+
+    /**
+     * 添加新回复
+     *
+     * @param topicId 回复帖子ID
+     * @param content 回复内容
+     * @param user 回复用户对象
+     */
+    public void addTopicReply(String topicId, String content, User user) {
+        if (StringUtils.isNumeric(topicId)) {
+            //新增回复到t_reply表
+            Reply reply = new Reply();
+            reply.setContent(content);
+            reply.setUserId(user.getId());
+            reply.setTopicId(Integer.valueOf(topicId));
+            replyDao.addReply(reply);
+            //更新t_topic表中的replynum 和 lastreplytime字段
+            Topic topic = topicDao.findById(topicId);
+            if (topic != null) {
+                topic.setReplyNum(topic.getReplyNum() + 1);
+                Timestamp now = new Timestamp(DateTime.now().getMillis());
+                topic.setLastReplyTime(now);
+                topicDao.update(topic);
+
+                logger.info("{}在“{}”时间回复了主题为“{}”的帖子", user.getUserName(), now, topic.getTitle());
+            } else {
+
+                logger.info("ID“{}”帖子查询出错", topicId);
+                throw new ServiceException("回复的帖子不存在或已被删除");
+            }
+        } else {
+
+            logger.debug("{}", topicId);
+            throw new ServiceException("参数错误");
         }
     }
 }

@@ -8,11 +8,9 @@ import com.kaishengit.util.DbHelp;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.handlers.AbstractListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +30,7 @@ public class TopicDao {
 
     /**
      * 查询所有与首页相关的信息，并封装成一个topic集合
+     *
      * @return topic 集合
      */
     public List<Topic> findAll() {
@@ -40,15 +39,14 @@ public class TopicDao {
             @Override
             protected Topic handleRow(ResultSet rs) throws SQLException {
                 Topic topic = new BasicRowProcessor().toBean(rs, Topic.class);
+                topic.setId(rs.getInt("id"));
 
                 User user = new User();
                 user.setAvatar(Config.get("qiniu.domain") + rs.getString("avatar"));
                 user.setUserName(rs.getString("username"));
-                user.setId(rs.getInt("id"));
                 topic.setUser(user);
 
                 Node node = new Node();
-                node.setId(rs.getInt("id"));
                 node.setTopicNum(rs.getInt("topicnum"));
                 node.setNodeName(rs.getString("nodename"));
                 topic.setNode(node);
@@ -56,5 +54,10 @@ public class TopicDao {
                 return topic;
             }
         });
+    }
+
+    public void update(Topic topic) {
+        String sql = "UPDATE t_topic SET title = ?, content = ?, createtime = ?, clicknum = ?, favnum= ?, thankyounum = ?, replynum = ?, lastreplytime = ?, nodeid = ?,userid = ? where id = ?";
+        DbHelp.update(sql, topic.getTitle(), topic.getContent(), topic.getCreateTime(), topic.getClickNum(), topic.getFavNum(), topic.getThankNum(), topic.getReplyNum(), topic.getLastReplyTime(), topic.getNodeId(), topic.getUserId(), topic.getId());
     }
 }
