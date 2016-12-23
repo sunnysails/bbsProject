@@ -11,7 +11,7 @@
 <div class="header-bar">
     <div class="container">
         <a href="/home" class="brand">
-            <i class="fa fa-reddit-alien"></i>
+            <i class="fa fa-flag"><span>首页</span></i>
         </a>
         <ul class="unstyled inline pull-right">
             <c:choose>
@@ -35,6 +35,7 @@
                         </a>
                     </li>
                     <li><a href="/login"><i class="fa fa-sign-in"></i></a></li>
+                    <li><a href="/reg"><i class="fa fa-user-plus"></i></a></li>
                 </c:otherwise>
             </c:choose>
         </ul>

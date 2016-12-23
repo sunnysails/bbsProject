@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -17,15 +18,12 @@
     <link rel="stylesheet" href="/static/js/dist/sweetalert.css">
 </head>
 <body>
-
 <%@include file="../include/navbar.jsp" %>
-
 <div class="container">
     <div class="box">
         <div class="box-header">
             <span class="title"><i class="fa fa-sign-in"></i> 登录</span>
         </div>
-
         <form id="loginForm" action="" class="form-horizontal">
             <c:if test="${not empty requestScope.message}">
                 <div class="alert alert-success">
@@ -33,7 +31,7 @@
                 </div>
             </c:if>
             <c:if test="${not empty param.redirect}">
-                <div class="alert alert-success">
+                <div class="alert alert-error">
                     请登录后再继续操作
                 </div>
             </c:if>
@@ -55,7 +53,6 @@
                     <a href="foundpassword">忘记密码</a>
                 </div>
             </div>
-
             <div class="form-actions">
                 <button id="loginBtn" class="btn btn-primary">登录</button>
 

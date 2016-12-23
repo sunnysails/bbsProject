@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,7 +17,6 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-
 <%@include file="./include/navbar.jsp" %>
 
 <div class="container">
@@ -45,7 +45,7 @@
                             <a href="/topicdetail?topicId=${topic.id}">${topic.title}</a>
                         </td>
                         <td width="50" align="center">
-                            <span class="badge">${topic.clickNum}</span>
+                            <span class="badge">${topic.replyNum}</span>
                         </td>
                     </tr>
                 </table>

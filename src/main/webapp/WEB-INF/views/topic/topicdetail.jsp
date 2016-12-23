@@ -9,7 +9,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>主题页</title>
@@ -65,7 +65,6 @@
         <div class="talk-item muted" style="font-size: 12px">
             ${fn:length(replyList)}个回复 | 直到 <span id="lastReplyTime">${requestScope.topic.lastReplyTime}</span>
         </div>
-        <%--TODO    bug 调试，不显示时间内容等参数--%>
         <c:forEach items="${replyList}" var="reply">
             <div class="talk-item">
                 <table class="talk-table">
@@ -89,29 +88,6 @@
                 </table>
             </div>
         </c:forEach>
-
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar"
-                             src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40"
-                             alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px"
-                                                                            class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">50</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
     </div>
     <c:choose>
         <c:when test="${not empty sessionScope.curr_user}">
