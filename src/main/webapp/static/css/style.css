@@ -54,10 +54,6 @@ body {
     float: left;
 }
 
-.header-bar .brand span{
-    font-size: 20px;
-}
-
 .header-bar ul li {
     height: 50px;
     line-height: 50px;

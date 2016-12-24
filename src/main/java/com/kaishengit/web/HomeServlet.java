@@ -3,6 +3,7 @@ package com.kaishengit.web;
 import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.service.TopicService;
+import com.kaishengit.util.Page;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,11 +20,22 @@ public class HomeServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //获取nodeList到页面
+        String nodeId = req.getParameter("nodeId");
+        String p= req.getParameter("p");
+
         TopicService topicService = new TopicService();
-        List<Topic> topicList = topicService.findAllTopic();
+        Page<Topic> page = topicService.findAllTopicBPANi(nodeId, p);
+
         List<Node> nodeList = topicService.findAllNode();
-        req.setAttribute("nodeList",nodeList);
+
+        if (page == null) {
+            forWord("index", req, resp);
+            return;
+        }
+        List<Topic> topicList = page.getItems();
+        req.setAttribute("nodeList", nodeList);
+        req.setAttribute("page", page);
         req.setAttribute("topicList", topicList);
-        forWord("index",req, resp);
+        forWord("index", req, resp);
     }
 }

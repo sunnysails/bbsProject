@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class Page<T> {
 
+    public static Integer PAGE = Integer.valueOf(Config.get("page.1"));
+
     //总页数
     private int totalPage;
     //当前页码
@@ -16,7 +18,7 @@ public class Page<T> {
     //总条数
     private int totals;
     //每页显示的数据量
-    private int pageSize = 2;
+    private int pageSize = PAGE;
     //当前页的起始行号
     private int start;
 

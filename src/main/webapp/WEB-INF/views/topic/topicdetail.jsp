@@ -41,7 +41,7 @@
             <img class="img-rounded avatar" src="${requestScope.topic.user.avatar}?imageView2/1/w/60/h/60" alt="">
             <h3 class="title">${requestScope.toric.title}</h3>
             <p class="topic-msg muted"><a href="">${requestScope.topic.user.userName}</a>
-                · ${requestScope.topic.createTime}</p>
+                · <span id="topicTime">${requestScope.topic.createTime}</span></p>
         </div>
         <div class="topic-body">
             ${requestScope.topic.content}

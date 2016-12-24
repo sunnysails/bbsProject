@@ -10,6 +10,7 @@ import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
+import com.kaishengit.util.Page;
 import com.kaishengit.util.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -126,7 +127,7 @@ public class TopicService {
      *
      * @param topicId 回复帖子ID
      * @param content 回复内容
-     * @param user 回复用户对象
+     * @param user    回复用户对象
      */
     public void addTopicReply(String topicId, String content, User user) {
         if (StringUtils.isNumeric(topicId)) {
@@ -155,5 +156,38 @@ public class TopicService {
             logger.debug("{}", topicId);
             throw new ServiceException("参数错误");
         }
+    }
+
+    /**
+     * 通过板块Id和页码查询数据库信息
+     *
+     * @param nodeId 板块Id
+     * @param pageNo 当前页码
+     * @return 一个页面内的topic对象集合
+     */
+    public Page<Topic> findAllTopicBPANi(String nodeId, String pageNo) {
+        Integer p = StringUtils.isNumeric(pageNo) ? Integer.valueOf(pageNo) : 1;
+        int count = 0;
+        if (StringUtils.isNumeric(nodeId)) {
+            count = nodeDao.findById(Integer.valueOf(nodeId)).getTopicNum();
+
+            logger.debug("当前版块总数量{}",count);
+        } else {
+            count = topicDao.count().intValue();
+
+            logger.debug("当前所有帖子总数量{}...",count);
+        }
+        List<Topic> topicList = null;
+        Page<Topic> topicPageList = new Page<>(count,p);
+
+        if (StringUtils.isEmpty(nodeId) || !StringUtils.isNumeric(nodeId)) {
+            topicList = topicDao.findAllByPage(topicPageList.getStart(), Page.PAGE);
+        } else {
+            topicList = topicDao.findAllByNodeIdAndPage(nodeId,topicPageList.getStart(), Page.PAGE);
+        }
+        topicPageList.setItems(topicList);
+
+        logger.debug("查询了“{}”第{}页数据,总共{}页",topicPageList.getStart(),p,Page.PAGE);
+        return topicPageList;
     }
 }

@@ -23,9 +23,10 @@
     <div class="box">
         <div class="talk-item">
             <ul class="topic-type unstyled inline" style="margin-bottom:0px;">
-                <li class="active"><a href="">全部</a></li>
+                <li class="${empty param.nodeId?'active':''}"><a href="/home">全部</a></li>
                 <c:forEach items="${nodeList}" var="node">
-                    <li class="active" a href="" value="${node.id}">${node.nodeName}</li>
+                    <li class="${node.id == param.nodeId?'active':''}"><a
+                            href="/home?nodeId=${node.id}">${node.nodeName}</a></li>
                 </c:forEach>
             </ul>
         </div>
@@ -51,14 +52,32 @@
                 </table>
             </div>
         </c:forEach>
+        <div class="pagination pagination-mini pagination-centered">
+            <ul id="pagination" style="margin-bottom:20px;"></ul>
+        </div>
     </div>
     <!--box end-->
 </div>
 <!--container end-->
 <div class="footer">
     <div class="container">
-        Copyright © 2016 kaishengit
+        Copyright © 2016 sun
     </div>
 </div>
+<script src="/static/js/jquery-1.11.1.js"></script>
+<script src="/static/js/jquery.twbsPagination.min.js"></script>
+<script>
+    $(function () {
+        $("#pagination").twbsPagination({
+            totalPages:${page.totalPage},
+            visiblePages: ${page.totalPage},
+            first: '首页',
+            last: '末页',
+            prev: '上一页',
+            next: '下一页',
+            href: '?p={{number}}&node=${param.node}'
+        });
+    });
+</script>
 </body>
 </html>
