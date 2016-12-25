@@ -1,13 +1,7 @@
 package com.kaishengit.service;
 
-import com.kaishengit.dao.NodeDao;
-import com.kaishengit.dao.ReplyDao;
-import com.kaishengit.dao.TopicDao;
-import com.kaishengit.dao.UserDao;
-import com.kaishengit.entity.Node;
-import com.kaishengit.entity.Reply;
-import com.kaishengit.entity.Topic;
-import com.kaishengit.entity.User;
+import com.kaishengit.dao.*;
+import com.kaishengit.entity.*;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import com.kaishengit.util.Page;
@@ -29,6 +23,7 @@ public class TopicService {
     private UserDao userDao = new UserDao();
     private NodeDao nodeDao = new NodeDao();
     private ReplyDao replyDao = new ReplyDao();
+    private FavDao favDao = new FavDao();
 
     /**
      * 查找所有论坛版块
@@ -93,7 +88,7 @@ public class TopicService {
      */
     public Topic findTopicById(String topicId) {
         if (StringUtils.isNumeric(topicId)) {
-            Topic topic = topicDao.findById(topicId);
+            Topic topic = topicDao.findById(Integer.valueOf(topicId));
             if (topic != null) {
                 User user = userDao.findById(topic.getUserId());
                 Node node = nodeDao.findById(topic.getNodeId());
@@ -138,7 +133,7 @@ public class TopicService {
             reply.setTopicId(Integer.valueOf(topicId));
             replyDao.addReply(reply);
             //更新t_topic表中的replynum 和 lastreplytime字段
-            Topic topic = topicDao.findById(topicId);
+            Topic topic = topicDao.findById(Integer.valueOf(topicId));
             if (topic != null) {
                 topic.setReplyNum(topic.getReplyNum() + 1);
                 Timestamp now = new Timestamp(DateTime.now().getMillis());
@@ -171,23 +166,81 @@ public class TopicService {
         if (StringUtils.isNumeric(nodeId)) {
             count = nodeDao.findById(Integer.valueOf(nodeId)).getTopicNum();
 
-            logger.debug("当前版块总数量{}",count);
+            logger.debug("当前版块总数量{}", count);
         } else {
             count = topicDao.count().intValue();
 
-            logger.debug("当前所有帖子总数量{}...",count);
+            logger.debug("当前所有帖子总数量{}...", count);
         }
         List<Topic> topicList = null;
-        Page<Topic> topicPageList = new Page<>(count,p);
+        Page<Topic> topicPageList = new Page<>(count, p);
 
-        if (StringUtils.isEmpty(nodeId) || !StringUtils.isNumeric(nodeId)) {
-            topicList = topicDao.findAllByPage(topicPageList.getStart(), Page.PAGE);
+        if (StringUtils.isNumeric(nodeId)) {
+            topicList = topicDao.findAllByNodeIdAndPage(nodeId, topicPageList.getStart(), Page.PAGE);
         } else {
-            topicList = topicDao.findAllByNodeIdAndPage(nodeId,topicPageList.getStart(), Page.PAGE);
+            topicList = topicDao.findAllByPage(topicPageList.getStart(), Page.PAGE);
         }
         topicPageList.setItems(topicList);
 
-        logger.debug("查询了“{}”第{}页数据,总共{}页",topicPageList.getStart(),p,Page.PAGE);
+        logger.debug("查询了“{}”第{}页数据,总共{}页", topicPageList.getStart(), p, Page.PAGE);
         return topicPageList;
+    }
+
+    public void updateTopic(Topic topic) {
+        topicDao.update(topic);
+    }
+
+    /**
+     * 统计帖子点击量
+     *
+     * @param topicId
+     * @param user
+     * @return
+     */
+    public Fav findFavByUserIdAndTopicId(String topicId, User user) {
+        if (StringUtils.isNumeric(topicId)) {
+
+            logger.debug("{}点击Id为：{}的帖子", user.getUserName(), topicId);
+            return favDao.findById(user.getId(), Integer.valueOf(topicId));
+        } else {
+//            logger.debug("fav查询错误，userId：{}，topicId{}", user.getId(), topicId);
+            throw new ServiceException("参数错误！");
+        }
+    }
+
+    /**
+     * 根据FAV 或者 UNFAN 进行决定收藏或取消收藏。
+     *
+     * @param action  当前状态fav
+     * @param user
+     * @param topicId
+     */
+    public void favOrUNTopic(String action, User user, String topicId) {
+        if (user != null && StringUtils.isNumeric(topicId)) {
+            Fav fav = new Fav();
+            Topic topic = topicDao.findById(Integer.valueOf(topicId));
+            if (action.equals("fav")) {
+                fav.setTopicId(Integer.valueOf(topicId));
+                fav.setUserId(user.getId());
+                favDao.addFav(fav);
+
+                logger.debug("{}fav了", user.getUserName());
+                topic.setFavNum(topic.getFavNum() + 1);
+            } else if (action.equals("unfav")) {
+                favDao.deleteFavById(user.getId(), Integer.valueOf(topicId));
+
+                logger.debug("{}取消了fav", user.getUserName());
+                topic.setFavNum(topic.getFavNum() - 1);
+            } else {
+                throw new ServiceException("参数错误！");
+            }
+
+            topicDao.update(topic);
+            logger.debug("{}fav数量", topic.getFavNum());
+        } else {
+            logger.debug("action={},userId={},topicId{},错误1", action, user.getId(), topicId);
+            throw new ServiceException("参数错误！");
+            //TODO,
+        }
     }
 }

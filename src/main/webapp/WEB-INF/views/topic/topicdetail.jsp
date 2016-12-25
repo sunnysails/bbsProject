@@ -47,14 +47,22 @@
             ${requestScope.topic.content}
         </div>
         <div class="topic-toolbar">
-            <ul class="unstyled inline pull-left">
-                <li><a href="">加入收藏</a></li>
-                <li><a href="">感谢</a></li>
-                <li><a href=""></a></li>
-            </ul>
+            <c:if test="${not empty sessionScope.curr_user}">
+                <ul class="unstyled inline pull-left">
+                    <c:choose>
+                        <c:when test="${not empty fav}">
+                            <li><a href="javascript:;" id="favTopic">取消收藏</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="javascript:;" id="favTopic">加入收藏</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                    <li><a href="">感谢</a></li>
+                </ul>
+            </c:if>
             <ul class="unstyled inline pull-right muted">
                 <li>${requestScope.topic.clickNum}次点击</li>
-                <li>${requestScope.topic.favNum}人收藏</li>
+                <li><span id="topicFav">${requestScope.topic.favNum}</span>人收藏</li>
                 <li>${requestScope.topic.thankNum}人感谢</li>
             </ul>
         </div>
@@ -124,14 +132,51 @@
 <script src="//cdn.bootcss.com/moment.js/2.10.6/locale/zh-cn.js"></script>
 <script>
     $(function () {
+        <c:if test="${not empty sessionScope.curr_user}">
         var editor = new Simditor({
             textarea: $('#editor'),
             toolbar: false
             //optional options
         });
+        </c:if>
 
         $("#replyBtn").click(function () {
             $("#replyForm").submit();
+        });
+
+        $("#favTopic").click(function () {
+            var $this = $(this);
+            var action = "";
+
+            if ($this.text() == "加入收藏") {
+                action = "fav";
+            } else {
+                action = "unfav"
+            }
+            $.post("/topicfav", {"topicId":${topic.id}, "action": action})
+                .done(function (json) {
+                    if (json.state == "success") {
+                        if (action == "fav") {
+                            swal({
+                                title: "取消收藏!",
+                                imageUrl: "/static/img/heart-down.png"
+                            });
+                            $this.text("取消收藏");
+                        } else {
+                            swal({
+                                title: "收藏成功!",
+                                imageUrl: "/static/img/heart-up.png"
+                            });
+                            $this.text("加入收藏");
+                        }
+                        $("#topicFav").text(json.data);
+                    } else {
+                        swal("操作失败,请稍候再试", "", "error");
+                    }
+                })
+                .error(function () {
+                    swal("操作失败,请稍候再试", "", "error");
+                });
         });
 
         $("#topicTime").text(moment($("#topicTime").text()).fromNow());

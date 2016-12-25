@@ -1,10 +1,13 @@
 package com.kaishengit.web.topic;
 
 import com.kaishengit.dto.JsonResult;
+import com.kaishengit.entity.Fav;
 import com.kaishengit.entity.Reply;
 import com.kaishengit.entity.Topic;
+import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.service.TopicService;
+import com.kaishengit.util.StringUtils;
 import com.kaishengit.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -26,11 +29,22 @@ public class TopicDetailServlet extends BaseServlet {
         try {
             Topic topic = topicService.findTopicById(topicId);
             List<Reply> replyList = topicService.findReplyListByTopicId(topicId);
+
+            topic.setClickNum(topic.getClickNum() + 1);
+            topicService.updateTopic(topic);
+
             req.setAttribute("topic", topic);
-            req.setAttribute("replyList",replyList);
+            req.setAttribute("replyList", replyList);
+
+            User user = (User) req.getSession().getAttribute("curr_user");
+            if (user != null) {
+                Fav fav = topicService.findFavByUserIdAndTopicId(topicId, user);
+                req.setAttribute("fav", fav);
+            }
+
             forWord("topic/topicdetail", req, resp);
         } catch (ServiceException e) {
-            resp.sendError(404,e.getMessage());
+            resp.sendError(404, e.getMessage());
             System.out.println(e.getMessage());
             //TODO logger
         }

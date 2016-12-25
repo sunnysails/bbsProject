@@ -15,6 +15,7 @@
     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/js/uploader/webuploader.css">
+    <link rel="stylesheet" href="/static/js/dist/sweetalert.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -110,8 +111,6 @@
 <script src="/static/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/static/js/uploader/webuploader.min.js"></script>
 <script src="/static/js/dist/sweetalert-dev.js"></script>
-<script src="/static/js/user/setting.js"></script>
-<link rel="stylesheet" href="/static/js/dist/sweetalert.css">
 <script>
     $(function () {
         //头像上传
@@ -150,5 +149,6 @@
         });
     });
 </script>
+<script src="/static/js/user/setting.js"></script>
 </body>
 </html>

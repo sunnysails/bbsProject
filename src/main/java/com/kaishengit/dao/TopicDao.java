@@ -37,7 +37,7 @@ public class TopicDao {
         //TODO node数量加！！
     }
 
-    public Topic findById(String topicId) {
+    public Topic findById(Integer topicId) {
         String sql = "SELECT * FROM t_topic WHERE id = ?";
         return DbHelp.query(sql, new BeanHandler<>(Topic.class), topicId);
     }

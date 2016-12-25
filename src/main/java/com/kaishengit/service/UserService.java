@@ -274,17 +274,20 @@ public class UserService {
     }
 
     /**
-     * 更改头像
+     * 更改头像,同时删除旧头像
      *
      * @param user    用户
      * @param fileKey 文件名
      */
     public void updateAvatar(User user, String fileKey) {
-        QiNiuService qiNiuService = new QiNiuService();
-        qiNiuService.delAfterUpdate(user);
+        if (user.getAvatar().equals("default-avatar")) {
+            QiNiuService qiNiuService = new QiNiuService();
+            qiNiuService.delAfterUpdate(user);
+        }
 
         user.setAvatar(fileKey);
         userDao.update(user);
+
         logger.info("用户{}更改了头像", user.getUserName());
     }
 }
