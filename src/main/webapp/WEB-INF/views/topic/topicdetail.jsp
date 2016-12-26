@@ -57,6 +57,7 @@
                             <li><a href="javascript:;" id="favTopic">加入收藏</a></li>
                         </c:otherwise>
                     </c:choose>
+                    <li><a href="/topicedit?topicId=${param.topicId}">编辑</a></li>
                     <li><a href="">感谢</a></li>
                 </ul>
             </c:if>
@@ -94,7 +95,6 @@
                         </td>
                     </tr>
                 </table>
-            </div>
         </c:forEach>
     </div>
     <c:choose>

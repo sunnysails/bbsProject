@@ -16,13 +16,18 @@ public class NodeDao {
         return DbHelp.query(sql, new BeanListHandler<Node>(Node.class));
     }
 
-    public Node findById(Integer id) {
+    public Node findById(Integer nodeId) {
         String sql = "SELECT * FROM t_node WHERE id = ?";
-        return DbHelp.query(sql, new BeanHandler<Node>(Node.class), id);
+        return DbHelp.query(sql, new BeanHandler<Node>(Node.class), nodeId);
     }
 
     public void save(Node node) {
         String sql = "UPDATE t_node SET nodename = ?, topicnum = ? WHERE id = ?";
-        DbHelp.update(sql,node.getNodeName(),node.getTopicNum(),node.getId());
+        DbHelp.update(sql, node.getNodeName(), node.getTopicNum(), node.getId());
+    }
+
+    public void update(Node node) {
+        String sql = "update t_node set nodename = ?, topicnum = ? where id = ?";
+        DbHelp.update(sql, node.getNodeName(), node.getTopicNum(), node.getId());
     }
 }

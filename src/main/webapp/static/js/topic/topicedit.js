@@ -24,24 +24,24 @@ $(function () {
         },
         submitHandler: function (form) {
             $.ajax({
-                url: "/newtopic",
+                url: "/topicedit",
                 type: "post",
                 data: $(form).serialize(),
                 beforeSend: function () {
-                    $("#sendBtn").text("正在提交请稍候").attr("disabled", "disabled");
+                    $("#sendBtn").text("正在提交修改请稍候").attr("disabled", "disabled");
                 },
                 success: function (json) {
                     if (json.state == "success") {
                         window.location.href = "/topicdetail?topicId=" + json.data.id;
                     } else {
-                        swal("新增主题异常", "", "error");
+                        swal("修改主题异常", "", "error");
                     }
                 },
                 error: function () {
                     swal("服务器异常", "", "error");
                 },
                 complete: function () {
-                    $("#sendBtn").text("发布主题").removeAttr("disabled");
+                    $("#sendBtn").text("确认修改").removeAttr("disabled");
                 }
             });
         }

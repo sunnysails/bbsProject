@@ -1,11 +1,17 @@
 package com.kaishengit.entity;
 
+import com.kaishengit.exception.ServiceException;
+import com.kaishengit.util.Config;
+import org.joda.time.DateTime;
+
 import java.sql.Timestamp;
 
 /**
  * Created by sunny on 2016/12/21.
  */
 public class Topic {
+    private static final Integer UNEDITTIME = Integer.valueOf(Config.get("topic.unedit.time"));
+
     private Integer id;
     private String title;
     private String content;
@@ -123,5 +129,18 @@ public class Topic {
 
     public void setNode(Node node) {
         this.node = node;
+    }
+
+    public boolean isEdit() {
+        DateTime dateTime = new DateTime(getCreateTime());
+        if (dateTime.plusMinutes(UNEDITTIME).isAfterNow()) {
+            if (getReplyNum() == 0){
+                return true;
+            }else {
+                throw new ServiceException("已有人回复该帖，不能删除该帖子");
+            }
+        } else {
+            throw new ServiceException("该帖发布已过允许时间，禁止进行编辑，请联系管理员");
+        }
     }
 }

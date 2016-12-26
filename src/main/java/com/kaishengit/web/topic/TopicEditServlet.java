@@ -16,18 +16,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by sunny on 2016/12/21.
+ * Created by sunny on 2016/12/26.
  */
-@WebServlet("/newtopic")
-public class NewTopicServlet extends BaseServlet {
+@WebServlet("/topicedit")
+public class TopicEditServlet extends BaseServlet {
     private TopicService topicService = new TopicService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String topicId = req.getParameter("topicId");
+        Topic topic = topicService.findTopicById(topicId);
         //获取nodeList到页面
         List<Node> nodeList = topicService.findAllNode();
+
+        req.setAttribute("topic", topic);
         req.setAttribute("nodeList", nodeList);
-        forWord("topic/newtopic", req, resp);
+        forWord("topic/topicedit", req, resp);
     }
 
     @Override
@@ -35,12 +39,13 @@ public class NewTopicServlet extends BaseServlet {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
         String nodeId = req.getParameter("nodeId");
-        User user = (User) req.getSession().getAttribute("curr_user");
+        String topicId = req.getParameter("topicId");
         JsonResult result = new JsonResult();
 
         try {
-            Topic topic = topicService.addNewTopic(title, content, nodeId, user.getId());
-            result.setData(topic);
+            topicService.updateTopicById(title, content, nodeId, topicId);
+            result.setState(JsonResult.SUCCESS);
+            result.setData(topicId);
         } catch (ServiceException e) {
             result.setMessage(e.getMessage());
         }

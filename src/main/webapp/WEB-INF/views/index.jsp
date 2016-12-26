@@ -75,7 +75,7 @@
             last: '末页',
             prev: '上一页',
             next: '下一页',
-            href: '?p={{number}}&node=${param.node}'
+            href: '?p={{number}}&nodeId=${param.nodeId}&node=${param.node}'
         });
     });
 </script>

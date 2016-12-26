@@ -57,27 +57,31 @@ public class TopicService {
      * @param userId  发帖人ID
      * @return Topic对象
      */
-    public Topic addNewTopic(String title, String content, Integer nodeId, Integer userId) {
+    public Topic addNewTopic(String title, String content, String nodeId, Integer userId) {
         //封装对象topic
-        Topic topic = new Topic();
-        topic.setTitle(title);
-        topic.setContent(content);
-        topic.setNodeId(nodeId);
-        topic.setUserId(userId);
-        Integer topicId = topicDao.save(topic);
-        topic.setId(topicId);
+        if (StringUtils.isNumeric(nodeId)) {
+            Topic topic = new Topic();
+            topic.setTitle(title);
+            topic.setContent(content);
+            topic.setNodeId(Integer.valueOf(nodeId));
+            topic.setUserId(userId);
+            Integer topicId = topicDao.save(topic);
+            topic.setId(topicId);
 
-        //更新node表的topicnum
-        Node node = nodeDao.findById(nodeId);
-        if (node != null) {
-            node.setTopicNum(node.getTopicNum() + 1);
-            nodeDao.save(node);
+            //更新node表的topicnum
+            Node node = nodeDao.findById(Integer.valueOf(nodeId));
+            if (node != null) {
+                node.setTopicNum(node.getTopicNum() + 1);
+                nodeDao.save(node);
+            } else {
+                throw new ServiceException("论坛板块不存在");
+            }
+
+            logger.info("Id为{}在{}板块ID：{}发表了主题为：{}帖子", userId, topic.getCreateTime(), nodeId, title);
+            return topic;
         } else {
-            throw new ServiceException("论坛板块不存在");
+            throw new ServiceException("参数错误！");
         }
-
-        logger.info("Id为{}在{}板块ID：{}发表了主题为：{}帖子", userId, topic.getCreateTime(), nodeId, title);
-        return topic;
     }
 
     /**
@@ -241,6 +245,49 @@ public class TopicService {
             logger.debug("action={},userId={},topicId{},错误1", action, user.getId(), topicId);
             throw new ServiceException("参数错误！");
             //TODO,
+        }
+    }
+
+    /**
+     * 更新帖子
+     *
+     * @param title
+     * @param content
+     * @param nodeId
+     * @param topicId
+     */
+    public void updateTopicById(String title, String content, String nodeId, String topicId) {
+        if (StringUtils.isNumeric(nodeId) && StringUtils.isNumeric(topicId)) {
+            Integer nId = Integer.valueOf(nodeId);
+            Integer tId = Integer.valueOf(topicId);
+
+            Topic topic = topicDao.findById(tId);
+            Integer oldNodeId = topic.getNodeId();
+            if (topic.isEdit()) {
+                topic.setTitle(title);
+                topic.setContent(content);
+                topic.setNodeId(nId);
+                topicDao.update(topic);
+                logger.info("Id“{}”用户修改了：“{}”帖子", topic.getUserId(), topic.getTitle());
+                if (oldNodeId != nId) {
+                    //更新node表，使得原來的node的topicnum -1
+                    Node oldNode = nodeDao.findById(nId);
+                    oldNode.setTopicNum(oldNode.getTopicNum() - 1);
+                    nodeDao.update(oldNode);
+                    //更新node表，使得新的node的topicnum + 1
+                    Node newNode = nodeDao.findById(nId);
+                    newNode.setTopicNum(newNode.getTopicNum() + 1);
+                    nodeDao.update(newNode);
+                    return;
+                }
+            } else {
+                logger.debug("删除");
+                throw new ServiceException("该帖子正在编辑或已被删除请稍候再试或者联系管理员。");
+            }
+        } else {
+
+            logger.error("错误");
+            throw new ServiceException("参数错误！");
         }
     }
 }
