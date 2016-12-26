@@ -57,7 +57,9 @@
                             <li><a href="javascript:;" id="favTopic">加入收藏</a></li>
                         </c:otherwise>
                     </c:choose>
-                    <li><a href="/topicedit?topicId=${param.topicId}">编辑</a></li>
+                    <c:if test="${sessionScope.curr_user.id==topic.userId}">
+                        <li><a href="/topicedit?topicId=${param.topicId}">编辑</a></li>
+                    </c:if>
                     <li><a href="">感谢</a></li>
                 </ul>
             </c:if>
@@ -79,9 +81,7 @@
                 <table class="talk-table">
                     <tr>
                         <td width="50">
-                            <img class="avatar"
-                                 src="${reply.user.avatar}?imageView2/1/w/40/h/40"
-                                 alt="">
+                            <img class="avatar" src="${reply.user.avatar}?imageView2/1/w/40/h/40" alt="">
                         </td>
                         <td width="auto">
                             <a href="" style="font-size: 12px">${reply.user.userName}</a> <span style="font-size: 12px"
@@ -95,32 +95,36 @@
                         </td>
                     </tr>
                 </table>
+            </div>
         </c:forEach>
+        <c:choose>
+            <c:when test="${not empty sessionScope.curr_user}">
+                <div class="box" style="margin:20px 0px;">
+                    <a name="reply"></a>
+                    <div class="talk-item muted" style="font-size: 12px">
+                        <i class="fa fa-plus"></i> 添加一条新回复
+                    </div>
+                    <form id="replyForm" method="post" action="/newreply" style="padding: 15px;margin-bottom:0px;">
+                        <input name="topicId" type="hidden" value="${topic.id}">
+                        <textarea name="content" id="editor"></textarea>
+                    </form>
+                    <div class="talk-item muted" style="text-align: right;font-size: 12px">
+                        <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
+                        <button id="replyBtn" class="btn btn-primary">发布</button>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="box" style="margin:20px 0px;">
+                    <div class="talk-item">
+                        请<a href="/login?redirect=topicdetail?topicId=${topic.id}#reply">登录</a>后再回复
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
     </div>
-    <c:choose>
-        <c:when test="${not empty sessionScope.curr_user}">
-            <div class="box" style="margin:20px 0px;">
-                <a name="reply"></a>
-                <div class="talk-item muted" style="font-size: 12px"><i class="fa fa-plus"></i> 添加一条新回复</div>
-                <form id="replyForm" method="post" action="/newreply" style="padding: 15px;margin-bottom:0px;">
-                    <input name="topicId" type="hidden" value="${topic.id}">
-                    <textarea name="content" id="editor"></textarea>
-                </form>
-                <div class="talk-item muted" style="text-align: right;font-size: 12px">
-                    <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
-                    <button id="replyBtn" class="btn btn-primary">发布</button>
-                </div>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="box" style="margin:20px 0px;">
-                <div class="talk-item"> 请<a href="/login?redirect=topicdetail?topicId=${topic.id}#reply">登录</a>后再回复
-                </div>
-            </div>
-        </c:otherwise>
-    </c:choose>
+    <!--container end-->
 </div>
-<!--container end-->
 <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script src="/static/js/editer/scripts/module.min.js"></script>
 <script src="/static/js/editer/scripts/hotkeys.min.js"></script>

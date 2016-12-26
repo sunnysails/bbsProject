@@ -32,7 +32,7 @@ $(function () {
                 },
                 success: function (json) {
                     if (json.state == "success") {
-                        window.location.href = "/topicdetail?topicId=" + json.data.id;
+                        window.location.href = "/topicdetail?topicId=" + json.data;
                     } else {
                         swal("修改主题异常", "", "error");
                     }

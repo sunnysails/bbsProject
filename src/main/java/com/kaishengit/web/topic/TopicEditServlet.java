@@ -44,7 +44,6 @@ public class TopicEditServlet extends BaseServlet {
 
         try {
             topicService.updateTopicById(title, content, nodeId, topicId);
-            result.setState(JsonResult.SUCCESS);
             result.setData(topicId);
         } catch (ServiceException e) {
             result.setMessage(e.getMessage());

@@ -44,6 +44,7 @@ public class JsonResult {
     }
 
     public void setMessage(String message) {
+        this.state = ERROR;
         this.message = message;
     }
 
@@ -52,6 +53,7 @@ public class JsonResult {
     }
 
     public void setData(Object data) {
+        this.state = SUCCESS;
         this.data = data;
     }
 }

@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li><a href="/login" title="登录"><i class="fa fa-sign-in"></i></a></li>
-                    <li><a href="/reg" title="登录"><i class="fa fa-user-plus"></i></a></li>
+                    <li><a href="/reg" title="注册"><i class="fa fa-user-plus"></i></a></li>
                 </c:otherwise>
             </c:choose>
         </ul>
