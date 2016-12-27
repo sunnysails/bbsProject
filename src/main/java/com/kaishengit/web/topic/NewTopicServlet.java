@@ -5,6 +5,7 @@ import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
+import com.kaishengit.service.QiNiuService;
 import com.kaishengit.service.TopicService;
 import com.kaishengit.web.BaseServlet;
 
@@ -24,9 +25,13 @@ public class NewTopicServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        QiNiuService qiNiuService = new QiNiuService();
+        String token = qiNiuService.upload();
+
         //获取nodeList到页面
         List<Node> nodeList = topicService.findAllNode();
         req.setAttribute("nodeList", nodeList);
+        req.setAttribute("token",token);
         forWord("topic/newtopic", req, resp);
     }
 
@@ -35,7 +40,7 @@ public class NewTopicServlet extends BaseServlet {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
         String nodeId = req.getParameter("nodeId");
-        User user = (User) req.getSession().getAttribute("curr_user");
+        User user = getCurrentUser(req);
         JsonResult result = new JsonResult();
 
         try {

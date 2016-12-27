@@ -65,6 +65,8 @@ public class TopicService {
             topic.setContent(content);
             topic.setNodeId(Integer.valueOf(nodeId));
             topic.setUserId(userId);
+            //暂时设置新帖最后回复时间与发布时间一致
+            topic.setLastReplyTime(new Timestamp(new DateTime().getMillis()));
             Integer topicId = topicDao.save(topic);
             topic.setId(topicId);
 

@@ -6,6 +6,7 @@ import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ public class QiNiu {
 
     /**
      * 当用户上传新头像时删除旧头像
+     *
      * @param zone
      * @param auth
      * @param bucketName
@@ -31,12 +33,16 @@ public class QiNiu {
             //调用delete方法移动文件
             bucketManager.delete(bucketName, fileKey);
 
-            logger.debug("删除：{}",fileKey);
+            logger.debug("删除：{}", fileKey);
         } catch (QiniuException e) {
             //捕获异常信息
             Response r = e.response;
 
-            logger.error("删除：{}异常。{}",fileKey,r.toString());
+            logger.error("删除：{}异常。{}", fileKey, r.toString());
         }
+    }
+
+    public static String upload(Auth auth, String bucketName, StringMap stringMap) {
+        return auth.uploadToken(bucketName,null,3600,stringMap);
     }
 }

@@ -22,7 +22,7 @@ public class FavServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         String topicId = req.getParameter("topicId");
-        User user = (User) req.getSession().getAttribute("curr_user");
+        User user = getCurrentUser(req);
         TopicService topicService = new TopicService();
         JsonResult result = new JsonResult();
         try {

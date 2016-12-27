@@ -22,7 +22,7 @@ public class NewReplyServlet extends BaseServlet {
         String topicId = req.getParameter("topicId");
         String content = req.getParameter("content");
 
-        User user = (User) req.getSession().getAttribute("curr_user");
+        User user = getCurrentUser(req);
         TopicService topicService = new TopicService();
         try {
             topicService.addTopicReply(topicId, content, user);

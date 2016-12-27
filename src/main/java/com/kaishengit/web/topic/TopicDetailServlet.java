@@ -36,7 +36,7 @@ public class TopicDetailServlet extends BaseServlet {
             req.setAttribute("topic", topic);
             req.setAttribute("replyList", replyList);
 
-            User user = (User) req.getSession().getAttribute("curr_user");
+            User user = getCurrentUser(req);
             if (user != null) {
                 Fav fav = topicService.findFavByUserIdAndTopicId(topicId, user);
                 req.setAttribute("fav", fav);
