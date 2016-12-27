@@ -1,5 +1,7 @@
 package com.kaishengit.entity;
 
+import com.kaishengit.util.Config;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -24,6 +26,8 @@ public class User implements Serializable {
      * 用户状态:禁用
      */
     public static final Integer USERSTATE_DISABLED = 2;
+
+    public static final String QINIUDOMAIN = Config.get("qiniu.domain");
 
     private Integer id;//用户ID
     private String userName;//用户帐号，用于登录
@@ -91,6 +95,10 @@ public class User implements Serializable {
     }
 
     public String getAvatar() {
+        return QINIUDOMAIN + avatar;
+    }
+
+    public String getAvatarFileName() {
         return avatar;
     }
 

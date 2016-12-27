@@ -98,7 +98,7 @@ public class TopicService {
             if (topic != null) {
                 User user = userDao.findById(topic.getUserId());
                 Node node = nodeDao.findById(topic.getNodeId());
-                user.setAvatar(Config.get("qiniu.domain") + user.getAvatar());
+                user.setAvatar(user.getAvatar());
                 topic.setUser(user);
                 topic.setNode(node);
 

@@ -24,7 +24,7 @@ public class TopicDao {
             Topic topic = new BasicRowProcessor().toBean(rs, Topic.class);
 
             User user = new User();
-            user.setAvatar(Config.get("qiniu.domain") + rs.getString("avatar"));
+            user.setAvatar(rs.getString("avatar"));
             user.setUserName(rs.getString("username"));
             topic.setUser(user);
             return topic;

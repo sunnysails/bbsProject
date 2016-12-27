@@ -1,5 +1,6 @@
 package com.kaishengit.util;
 
+import com.kaishengit.exception.ServiceException;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -43,6 +44,11 @@ public class QiNiu {
     }
 
     public static String upload(Auth auth, String bucketName, StringMap stringMap) {
-        return auth.uploadToken(bucketName,null,3600,stringMap);
+        try {
+            return auth.uploadToken(bucketName, null, 3600, stringMap);
+        }catch (ServiceException e){
+            logger.error("图片上传失败，{}",e.getMessage());
+            throw new ServiceException("上传失败");
+        }
     }
 }

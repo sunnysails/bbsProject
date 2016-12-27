@@ -89,7 +89,7 @@
                 <label class="control-label">当前头像</label>
                 <div class="controls">
                     <img id="avatar"
-                         src="http://oi245j9g2.bkt.clouddn.com/${sessionScope.curr_user.avatar}?imageView2/1/w/80/h/80"
+                         src="${sessionScope.curr_user.avatar}?imageView2/1/w/80/h/80"
                          class="img-circle" alt="">
                 </div>
             </div>

@@ -280,7 +280,7 @@ public class UserService {
      * @param fileKey 文件名
      */
     public void updateAvatar(User user, String fileKey) {
-        if (user.getAvatar().equals("default-avatar")) {
+        if (user.getAvatar().equals(User.QINIUDOMAIN + "default-avatar")) {
             QiNiuService qiNiuService = new QiNiuService();
             qiNiuService.delAfterUpdate(user);
         }
