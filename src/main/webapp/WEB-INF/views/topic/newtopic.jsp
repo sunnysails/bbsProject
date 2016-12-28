@@ -79,5 +79,6 @@
     });
 </script>
 <script src="/static/js/topic/newtopic.js"></script>
+<script src="/static/js/user/notify.js"></script>
 </body>
 </html>

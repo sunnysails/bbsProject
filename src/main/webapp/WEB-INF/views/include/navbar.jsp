@@ -18,12 +18,12 @@
                 <c:when test="${not empty sessionScope.curr_user}">
                     <li>
                         <a href="/setting" title="个人中心">
-                            <img id="navbar_avatar" src="${sessionScope.curr_user.avatar}?imageView2/1/w/20/h/20"
+                            <img id="navbar_avatar" src="http://oi245j9g2.bkt.clouddn.com/${sessionScope.curr_user.avatar}?imageView2/1/w/20/h/20"
                                  class="img-circle" alt="">
                         </a>
                     </li>
                     <li><a href="/newtopic"><i class="fa fa-plus" title="发帖"></i></a></li>
-                    <li><a href="/notify"><i class="fa fa-bell" title="通知"></i><span id="unreadCount" class="badge">3</span></a></li>
+                    <li><a href="/notify"><i class="fa fa-bell" title="通知"></i><span id="unreadCount" class="badge"></span></a></li>
                     <li><a href="/setting"><i class="fa fa-cog" title="设置"></i></a></li>
                     <li><a href="/logout"><i class="fa fa-sign-out" title="退出"></i></a></li>
                 </c:when>

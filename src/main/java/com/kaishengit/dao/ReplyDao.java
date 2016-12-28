@@ -30,7 +30,7 @@ public class ReplyDao {
                 Reply reply = new BasicRowProcessor().toBean(rs, Reply.class);
 
                 User user = new User();
-                user.setAvatar(Config.get("qiniu.domain") + rs.getString("avatar"));
+                user.setAvatar(User.QINIUDOMAIN + rs.getString("avatar"));
                 user.setUserName(rs.getString("username"));
                 user.setId(rs.getInt("id"));
                 reply.setUser(user);

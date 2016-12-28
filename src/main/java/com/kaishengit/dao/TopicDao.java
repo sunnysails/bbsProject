@@ -22,9 +22,8 @@ public class TopicDao {
         @Override
         protected Topic handleRow(ResultSet rs) throws SQLException {
             Topic topic = new BasicRowProcessor().toBean(rs, Topic.class);
-
             User user = new User();
-            user.setAvatar(rs.getString("avatar"));
+            user.setAvatar(User.QINIUDOMAIN + rs.getString("avatar"));
             user.setUserName(rs.getString("username"));
             topic.setUser(user);
             return topic;

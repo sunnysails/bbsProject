@@ -95,10 +95,6 @@ public class User implements Serializable {
     }
 
     public String getAvatar() {
-        return QINIUDOMAIN + avatar;
-    }
-
-    public String getAvatarFileName() {
         return avatar;
     }
 

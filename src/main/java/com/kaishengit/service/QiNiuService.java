@@ -17,7 +17,7 @@ public class QiNiuService {
     private  StringMap stringMap = new StringMap();
 
     public void delAfterUpdate(User user) {
-        QiNiu.delete(zone, auth, bucketName,user.getAvatarFileName());
+        QiNiu.delete(zone, auth, bucketName,user.getAvatar());
     }
 
     public String upload() {

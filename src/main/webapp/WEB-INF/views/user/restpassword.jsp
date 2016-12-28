@@ -52,5 +52,6 @@
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/dist/sweetalert-dev.js"></script>
 <script src="/static/js/user/restpassword.js"></script>
+<script src="/static/js/user/notify.js"></script>
 </body>
 </html>

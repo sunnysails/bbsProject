@@ -99,7 +99,7 @@ public class TopicService {
             if (topic != null) {
                 User user = userDao.findById(topic.getUserId());
                 Node node = nodeDao.findById(topic.getNodeId());
-                user.setAvatar(user.getAvatar());
+                user.setAvatar(User.QINIUDOMAIN + user.getAvatar());
                 topic.setUser(user);
                 topic.setNode(node);
 
@@ -154,10 +154,10 @@ public class TopicService {
                 throw new ServiceException("回复的帖子不存在或已被删除");
             }
             //新增回复通知
-            if (!user.getId().equals(topic.getUserId())){
+            if (!user.getId().equals(topic.getUserId())) {
                 Notify notify = new Notify();
                 notify.setUserId(topic.getUserId());
-                notify.setContent("您的主题 <a href=\"/topicDetail?topicid="+topic.getId()+"\">["+ topic.getTitle()+"] </a> 有了新的回复,请查看.");
+                notify.setContent("您的主题 <a href=\"/topicDetail?topicid=" + topic.getId() + "\">[" + topic.getTitle() + "] </a> 有了新的回复,请查看.");
                 notify.setState(Notify.NOTIFY_STATE_UNREAD);
                 notifyDao.save(notify);
             }

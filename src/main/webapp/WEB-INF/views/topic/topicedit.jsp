@@ -65,5 +65,6 @@
     });
 </script>
 <script src="/static/js/topic/topicedit.js"></script>
+<script src="/static/js/user/notify.js"></script>
 </body>
 </html>
