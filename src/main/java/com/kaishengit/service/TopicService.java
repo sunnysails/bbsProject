@@ -24,6 +24,7 @@ public class TopicService {
     private NodeDao nodeDao = new NodeDao();
     private ReplyDao replyDao = new ReplyDao();
     private FavDao favDao = new FavDao();
+    private NotifyDao notifyDao = new NotifyDao();
 
     /**
      * 查找所有论坛版块
@@ -151,6 +152,14 @@ public class TopicService {
 
                 logger.info("ID“{}”帖子查询出错", topicId);
                 throw new ServiceException("回复的帖子不存在或已被删除");
+            }
+            //新增回复通知
+            if (!user.getId().equals(topic.getUserId())){
+                Notify notify = new Notify();
+                notify.setUserId(topic.getUserId());
+                notify.setContent("您的主题 <a href=\"/topicDetail?topicid="+topic.getId()+"\">["+ topic.getTitle()+"] </a> 有了新的回复,请查看.");
+                notify.setState(Notify.NOTIFY_STATE_UNREAD);
+                notifyDao.save(notify);
             }
         } else {
 

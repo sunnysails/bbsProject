@@ -41,14 +41,14 @@
                             <c:when test="${notify.state == 1}">
                                 <tr class="" style="text-decoration: line-through">
                                     <td></td>
-                                    <td>${notify.createtime}</td>
+                                    <td>${notify.createTime}</td>
                                     <td>${notify.content}</td>
                                 </tr>
                             </c:when>
                             <c:otherwise>
                                 <tr>
                                     <td><input value="${notify.id}" type="checkbox" class="ckSon"></td>
-                                    <td>${notify.createtime}</td>
+                                    <td>${notify.createTime}</td>
                                     <td>${notify.content}</td>
                                 </tr>
                             </c:otherwise>
@@ -66,5 +66,54 @@
     </div>
     <!--box end-->
 </div>
+<script src="/static/js/jquery-1.11.1.js"></script>
+<script>
+    $(function () {
+        $("#ckFather").click(function () {
+            var sons = $(".ckSon");
+            for (var i = 0; i < sons.length; i++) {
+                sons[i].checked = $(this)[0].checked;
+            }
+            if ($(this)[0].checked == true) {
+                $("#markBtn").removeAttr("disabled");
+            } else {
+                $("#markBtn").attr("disabled", "disabled");
+            }
+        });
+        $(".ckSon").click(function () {
+            var sons = $(".ckSon");
+            var num = 0;
+            for (var i = 0; i < sons; i++) {
+                if (sons[i].checked) {
+                    num++;
+                }
+            }
+            if (num == sons.length) {
+                $("#ckFather")[0].checked = true;
+            } else {
+                $("#ckFather")[0].checked = false;
+            }
+            if (num > 0) {
+                $("#markBtn").removeAttr("disabled");
+            } else {
+                $("#markBtn").attr("disabled", "disable");
+            }
+        });
+        $("#markBtn").click(function (json) {
+            var ids = [];
+            var sons = $(".ckSon");
+            for (var i = 0; i < sons.length; i++) {
+                if (sons[i].checked == true) {
+                    ids.push(sons[i].value);
+                }
+            }
+            $.post("/notifyread", {"ids": ids.join(",")}, function () {
+                if (json == "success") {
+                    window.history.go(0);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

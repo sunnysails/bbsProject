@@ -1,19 +1,26 @@
 package com.kaishengit.service;
 
+import com.google.common.base.Predicate;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.kaishengit.dao.LoginLogDao;
+import com.kaishengit.dao.NotifyDao;
 import com.kaishengit.dao.UserDao;
 import com.kaishengit.entity.LoginLog;
+import com.kaishengit.entity.Notify;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import com.kaishengit.util.EmailUtil;
 import com.kaishengit.util.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class UserService {
     private Logger logger = LoggerFactory.getLogger(UserService.class);
     private LoginLogDao loginLogDao = new LoginLogDao();
+    private NotifyDao notifyDao = new NotifyDao();
 
     private UserDao userDao = new UserDao();
 
@@ -289,5 +297,36 @@ public class UserService {
         userDao.update(user);
 
         logger.info("用户{}更改了头像", user.getUserName());
+    }
+
+    public List<Notify> findNotifyListByUser(User user) {
+        logger.debug("查询通知列表");
+        return notifyDao.findByUserId(user.getId());
+    }
+
+    /**
+     * 根据user 查出notifyList,同时进行过滤，选择出unreadNotifyList
+     *
+     * @param user user对象
+     * @return unReadNotifyList，未读通知列表
+     */
+    public List<Notify> findUnreadNotifyListByUser(User user) {
+        logger.debug("查询未读通知列表");
+        return Lists.newArrayList(Collections2.filter(notifyDao.findByUserId(user.getId()), new Predicate<Notify>() {
+            @Override
+            public boolean apply(Notify notify) {
+                return notify.getState() == 0;
+            }
+        }));
+    }
+
+    public void updateNotifyStateByIds(String ids) {
+        String idArray[] = ids.split(",");
+        for (int i = 0; i < idArray.length; i++) {
+            Notify notify = notifyDao.findById(Integer.valueOf(idArray[i]));
+            notify.setState(Notify.NOTIFY_STATE_READ);
+            notify.setReadTime(new Timestamp(DateTime.now().getMillis()));
+            notifyDao.update(notify);
+        }
     }
 }

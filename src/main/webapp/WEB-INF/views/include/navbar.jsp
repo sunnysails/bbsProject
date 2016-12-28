@@ -11,7 +11,7 @@
 <div class="header-bar">
     <div class="container">
         <a href="/home" class="brand">
-            <i class="fa fa-flag" title="首页"></i>
+            <i class="fa fa-flag" title="首页"></i><c:if test="${not empty sessionScope.curr_user}"></c:if>
         </a>
         <ul class="unstyled inline pull-right">
             <c:choose>
@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li><a href="/newtopic"><i class="fa fa-plus" title="发帖"></i></a></li>
-                    <li><a href="#"><i class="fa fa-bell" title="通知"></i></a></li>
+                    <li><a href="/notify"><i class="fa fa-bell" title="通知"></i><span id="unreadCount" class="badge">3</span></a></li>
                     <li><a href="/setting"><i class="fa fa-cog" title="设置"></i></a></li>
                     <li><a href="/logout"><i class="fa fa-sign-out" title="退出"></i></a></li>
                 </c:when>
