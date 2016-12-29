@@ -30,7 +30,7 @@
                 </c:forEach>
             </ul>
         </div>
-        <c:forEach items="${topicList}" var="topic">
+        <c:forEach items="${page.items}" var="topic">
             <div class="talk-item">
                 <table class="talk-table">
                     <tr>

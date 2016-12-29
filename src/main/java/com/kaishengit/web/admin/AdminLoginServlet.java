@@ -1,10 +1,9 @@
-package com.kaishengit.web.user;
+package com.kaishengit.web.admin;
 
-import com.google.common.collect.Maps;
 import com.kaishengit.dto.JsonResult;
-import com.kaishengit.entity.User;
+import com.kaishengit.entity.Admin;
 import com.kaishengit.exception.ServiceException;
-import com.kaishengit.service.UserService;
+import com.kaishengit.service.AdminService;
 import com.kaishengit.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -13,34 +12,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
 
 /**
- * Created by sunny on 2016/12/15.
+ * Created by sunny on 2016/12/28.
  */
-@WebServlet("/login")
-public class LoginServlet extends BaseServlet {
+@WebServlet("/admin/login")
+public class AdminLoginServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        forWard("user/login", req, resp);
+        forWard("admin/login", req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("userName");
+        String adminName = req.getParameter("adminName");
         String passWord = req.getParameter("passWord");
-
-        //获取客户端Ip
         String ip = req.getLocalAddr();
-
         JsonResult result = new JsonResult();
-        UserService userService = new UserService();
-        try {
-            User user = userService.login(userName, passWord, ip);
+        AdminService adminService = new AdminService();
 
-            //将登录成功的用户放入Session
+        try {
+            Admin admin = adminService.login(adminName, passWord, ip);
+
             HttpSession session = req.getSession();
-            session.setAttribute("curr_user", user);
+            session.setAttribute("curr_admin", admin);
             result.setState(JsonResult.SUCCESS);
         } catch (ServiceException e) {
             result.setMessage(e.getMessage());

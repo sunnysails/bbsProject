@@ -26,7 +26,7 @@ public class SettingServlet extends BaseServlet {
         String token = auth.uploadToken(Config.get("qiniu.bucket"));
 
         req.setAttribute("token", token);
-        forWord("user/setting", req, resp);
+        forWard("user/setting", req, resp);
     }
 
     @Override

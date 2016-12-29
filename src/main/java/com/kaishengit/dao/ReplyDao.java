@@ -43,4 +43,9 @@ public class ReplyDao {
         String sql = "INSERT INTO t_reply (content, userid, topicid) VALUES(?,?,?)";
         DbHelp.insert(sql, reply.getContent(), reply.getUserId(), reply.getTopicId());
     }
+
+    public void delByTopicId(String topicId) {
+        String sql = "DELETE FROM t_reply WHERE topicid = ?";
+        DbHelp.update(sql,topicId);
+    }
 }

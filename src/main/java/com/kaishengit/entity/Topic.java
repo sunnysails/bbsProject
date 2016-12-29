@@ -133,14 +133,10 @@ public class Topic {
 
     public boolean isEdit() {
         DateTime dateTime = new DateTime(getCreateTime());
-        if (dateTime.plusMinutes(UNEDITTIME).isAfterNow()) {
-            if (getReplyNum() == 0){
-                return true;
-            }else {
-                throw new ServiceException("已有人回复该帖，不能删除该帖子");
-            }
+        if (dateTime.plusMinutes(UNEDITTIME).isAfterNow() && getReplyNum() == 0) {
+            return true;
         } else {
-            throw new ServiceException("该帖发布已过允许时间，禁止进行编辑，请联系管理员");
+            return false;
         }
     }
 }

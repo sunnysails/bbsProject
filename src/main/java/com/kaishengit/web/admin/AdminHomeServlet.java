@@ -1,4 +1,4 @@
-package com.kaishengit.web.user;
+package com.kaishengit.web.admin;
 
 import com.kaishengit.web.BaseServlet;
 
@@ -6,20 +6,15 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by sunny on 2016/12/18.
+ * Created by sunny on 2016/12/29.
  */
-@WebServlet("/logout")
-public class LogoutServlet extends BaseServlet {
+@WebServlet("/admin/home")
+public class AdminHomeServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        session.invalidate();
-
-        req.setAttribute("message","您已安全退出");
-        forWard ("user/login",req,resp);
+        forWard("admin/home",req,resp);
     }
 }

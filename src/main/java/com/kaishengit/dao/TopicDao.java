@@ -88,4 +88,9 @@ public class TopicDao {
         String sql = "SELECT tu.username,tu.avatar,tt.* FROM t_topic tt ,t_user tu WHERE tt.userid = tu.id AND nodeid=? ORDER BY lastreplytime DESC LIMIT ?,?";
         return DbHelp.query(sql, abr, nodeId, page, p);
     }
+
+    public void delById(String topicId) {
+        String sql = "DELETE FROM t_topic WHERE id = ?";
+        DbHelp.update(sql,topicId);
+    }
 }

@@ -208,7 +208,7 @@ public class TopicService {
     /**
      * 统计帖子点击量
      *
-     * @param topicId
+     * @param topicId 需要统计的帖子Id
      * @param user
      * @return
      */
@@ -274,7 +274,7 @@ public class TopicService {
 
             Topic topic = topicDao.findById(tId);
             Integer oldNodeId = topic.getNodeId();
-            if (topic.isEdit()) {
+            if (topic. isEdit()) {
                 topic.setTitle(title);
                 topic.setContent(content);
                 topic.setNodeId(nId);

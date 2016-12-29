@@ -35,7 +35,7 @@
     <div class="box">
         <ul class="breadcrumb" style="background-color: #fff;margin-bottom: 0px;">
             <li><a href="/home">首页</a> <span class="divider">/</span></li>
-            <li class="active">${requestScope.topic.node.nodeName}</li>
+            <li class="active"><a href="/home?nodeId=${topic.nodeId}">${requestScope.topic.node.nodeName}</a></li>
         </ul>
         <div class="topic-head">
             <img class="img-rounded avatar" src="${requestScope.topic.user.avatar}?imageView2/1/w/60/h/60" alt="">
@@ -57,7 +57,7 @@
                             <li><a href="javascript:;" id="favTopic">加入收藏</a></li>
                         </c:otherwise>
                     </c:choose>
-                    <c:if test="${sessionScope.curr_user.id==topic.userId}">
+                    <c:if test="${sessionScope.curr_user.id==topic.userId and topic.edit}">
                         <li><a href="/topicedit?topicId=${param.topicId}">编辑</a></li>
                     </c:if>
                     <li><a href="">感谢</a></li>

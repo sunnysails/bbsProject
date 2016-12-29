@@ -31,7 +31,7 @@ public class TopicEditServlet extends BaseServlet {
 
         req.setAttribute("topic", topic);
         req.setAttribute("nodeList", nodeList);
-        forWord("topic/topicedit", req, resp);
+        forWard("topic/topicedit", req, resp);
     }
 
     @Override

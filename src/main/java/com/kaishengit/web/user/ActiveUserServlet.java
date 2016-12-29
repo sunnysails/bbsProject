@@ -24,10 +24,10 @@ public class ActiveUserServlet extends BaseServlet {
             UserService userService = new UserService();
             try{
                 userService.activeUser(token);
-                forWord("user/active_success",req,resp);
+                forWard("user/active_success",req,resp);
             }catch (ServletException e){
                 req.setAttribute("message",e.getMessage());
-                forWord("user/active_error", req, resp);
+                forWard("user/active_error", req, resp);
             }
         }
     }

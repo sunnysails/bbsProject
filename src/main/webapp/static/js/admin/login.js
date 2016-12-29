@@ -20,7 +20,7 @@ $(function () {
         errorElment: "span",
         errorClass: "text-error",
         rules: {
-            userName: {
+            adminName: {
                 required: true
             },
             passWord: {
@@ -28,7 +28,7 @@ $(function () {
             }
         },
         messages: {
-            userName: {
+            adminName: {
                 required: "请输入账号"
             },
             passWord: {
@@ -37,12 +37,13 @@ $(function () {
         },
         submitHandler: function (form) {
             $.ajax({
-                url: "/login",
+                url: "/admin/login",
                 type: "post",
                 data: $(form).serialize(),
                 beforeSend: function () {
                     $("#loginBtn").text("登录中...").attr("disable", "disable")
                 },
+
                 success: function (data) {
                     if (data.state == 'success') {
                         swal({
@@ -59,7 +60,7 @@ $(function () {
                                 if (url) {
                                     window.location.href = url;
                                 } else {
-                                    window.location.href = "/home";
+                                    window.location.href = "/admin/home";
                                 }
                             });
                     } else {

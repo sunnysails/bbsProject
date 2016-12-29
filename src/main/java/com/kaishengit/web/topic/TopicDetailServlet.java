@@ -40,7 +40,7 @@ public class TopicDetailServlet extends BaseServlet {
                 req.setAttribute("fav", fav);
             }
 
-            forWord("topic/topicdetail", req, resp);
+            forWard("topic/topicdetail", req, resp);
         } catch (ServiceException e) {
             resp.sendError(404, e.getMessage());
             System.out.println(e.getMessage());

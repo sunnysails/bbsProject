@@ -19,7 +19,7 @@ import java.util.Map;
 public class RegServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        forWord("user/reg", req, resp);
+        forWard("user/reg", req, resp);
     }
 
     @Override

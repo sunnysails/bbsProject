@@ -23,7 +23,7 @@ public class NotifyServlet extends BaseServlet {
         User user = getCurrentUser(req);
         List<Notify> notifyList = new UserService().findNotifyListByUser(user);
         req.setAttribute("notifyList",notifyList);
-        forWord("user/notify",req,resp);
+        forWard("user/notify",req,resp);
     }
 
     @Override

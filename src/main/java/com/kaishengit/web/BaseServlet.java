@@ -16,7 +16,7 @@ import java.io.PrintWriter;
  */
 public class BaseServlet extends HttpServlet {
 
-    public void forWord(String path, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void forWard(String path, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/" + path + ".jsp").forward(req, resp);
     }
 

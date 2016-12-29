@@ -32,7 +32,7 @@ public class NewTopicServlet extends BaseServlet {
         List<Node> nodeList = topicService.findAllNode();
         req.setAttribute("nodeList", nodeList);
         req.setAttribute("token",token);
-        forWord("topic/newtopic", req, resp);
+        forWard("topic/newtopic", req, resp);
     }
 
     @Override

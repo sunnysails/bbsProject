@@ -18,7 +18,7 @@
                 <c:when test="${not empty sessionScope.curr_user}">
                     <li>
                         <a href="/setting" title="个人中心">
-                            <img id="navbar_avatar" src="http://oi245j9g2.bkt.clouddn.com/${sessionScope.curr_user.avatar}?imageView2/1/w/20/h/20"
+                            <img id="navbar_avatar" src="${sessionScope.curr_user.avatar}?imageView2/1/w/20/h/20"
                                  class="img-circle" alt="">
                         </a>
                     </li>

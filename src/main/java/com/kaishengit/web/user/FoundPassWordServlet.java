@@ -19,7 +19,7 @@ import java.util.Map;
 public class FoundPassWordServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        forWord("user/foundpassword", req, resp);
+        forWard("user/foundpassword", req, resp);
     }
 
     @Override

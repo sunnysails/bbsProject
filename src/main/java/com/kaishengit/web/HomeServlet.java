@@ -29,13 +29,12 @@ public class HomeServlet extends BaseServlet {
         List<Node> nodeList = topicService.findAllNode();
 
         if (page == null) {
-            forWord("index", req, resp);
+            forWard("index", req, resp);
             return;
         }
         List<Topic> topicList = page.getItems();
         req.setAttribute("nodeList", nodeList);
         req.setAttribute("page", page);
-        req.setAttribute("topicList", topicList);
-        forWord("index", req, resp);
+        forWard("index", req, resp);
     }
 }

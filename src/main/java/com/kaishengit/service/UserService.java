@@ -153,7 +153,8 @@ public class UserService {
                 log.setIp(ip);
                 log.setUserId(user.getId());
                 loginLogDao.save(log);
-
+                //拼装avatar的完整路径
+                user.setAvatar(User.QINIUDOMAIN + user.getAvatar());
                 logger.info("{}登录了系统,IP:{}", userName, ip);
                 return user;
             } else if (User.USERSTATE_UNACTIVE.equals(user.getState())) {

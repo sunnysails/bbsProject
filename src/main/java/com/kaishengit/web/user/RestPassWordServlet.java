@@ -31,10 +31,10 @@ public class RestPassWordServlet extends BaseServlet {
                 User user = userService.foundPasswordGetUserByToken(token);
                 req.setAttribute("token", token);
                 req.setAttribute("user", user);
-                forWord("user/restpassword", req, resp);
+                forWard("user/restpassword", req, resp);
             } catch (ServiceException e) {
                 req.setAttribute("message", e.getMessage());
-                forWord("user/reset_error", req, resp);
+                forWard("user/reset_error", req, resp);
             }
         }
     }
