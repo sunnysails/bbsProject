@@ -5,6 +5,7 @@ import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
+import com.kaishengit.service.NodeService;
 import com.kaishengit.service.TopicService;
 import com.kaishengit.web.BaseServlet;
 
@@ -21,13 +22,14 @@ import java.util.List;
 @WebServlet("/topicedit")
 public class TopicEditServlet extends BaseServlet {
     private TopicService topicService = new TopicService();
+    private NodeService nodeService = new NodeService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String topicId = req.getParameter("topicId");
         Topic topic = topicService.findTopicById(topicId);
         //获取nodeList到页面
-        List<Node> nodeList = topicService.findAllNode();
+        List<Node> nodeList = nodeService.findAllNode();
 
         req.setAttribute("topic", topic);
         req.setAttribute("nodeList", nodeList);

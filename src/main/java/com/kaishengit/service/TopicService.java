@@ -3,7 +3,6 @@ package com.kaishengit.service;
 import com.kaishengit.dao.*;
 import com.kaishengit.entity.*;
 import com.kaishengit.exception.ServiceException;
-import com.kaishengit.util.Config;
 import com.kaishengit.util.Page;
 import com.kaishengit.util.StringUtils;
 import org.joda.time.DateTime;
@@ -25,16 +24,6 @@ public class TopicService {
     private ReplyDao replyDao = new ReplyDao();
     private FavDao favDao = new FavDao();
     private NotifyDao notifyDao = new NotifyDao();
-
-    /**
-     * 查找所有论坛版块
-     *
-     * @return 论坛版块清单，nodeList
-     */
-    public List<Node> findAllNode() {
-        logger.debug("查询了所有板块信息");
-        return nodeDao.findAll();
-    }
 
     /**
      * 查询所有帖子信息，并返回完整的topic对象集合（包含user，node信息）。

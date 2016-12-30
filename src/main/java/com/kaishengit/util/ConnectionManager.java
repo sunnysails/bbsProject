@@ -1,9 +1,7 @@
 package com.kaishengit.util;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import com.kaishengit.exception.DataAccessException;
 import org.apache.commons.dbcp2.BasicDataSource;

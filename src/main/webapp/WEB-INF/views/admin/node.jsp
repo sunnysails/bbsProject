@@ -8,13 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/sweetalert.css" rel="stylesheet">
+    <link href="/static/js/dist/sweetalert.css" rel="stylesheet">
     <style>
         .mt20 {
             margin-top: 20px;
@@ -25,7 +25,7 @@
 <%@include file="../include/adminnavbar.jsp"%>
 <!--header-bar end-->
 <div class="container-fluid mt20">
-    <a href="newnode.html" class="btn btn-success">添加新节点</a>
+    <a href="javascript:;" id="addNode" class="btn btn-success">添加新节点</a>
     <table class="table">
         <thead>
         <tr>
@@ -36,7 +36,7 @@
         <tbody>
         <c:forEach items="${nodeList}" var="node">
             <tr>
-                <td>${node.nodename}</td>
+                <td>${node.nodeName}</td>
                 <td>
                     <a href="/admin/nodeUpdate?nodeId=${node.id}">修改</a>
                     <a href="javascript:;" rel="${node.id}" class="delNode">删除</a>
@@ -49,5 +49,7 @@
 <!--container end-->
 <script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.twbsPagination.min.js"></script>
-<script src="/static/js/sweetalert.min.js"></script></body>
+<script src="/static/js/dist/sweetalert.min.js"></script></body>
+<script src="/static/js/admin/node.js"></script>
+</body>
 </html>

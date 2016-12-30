@@ -2,6 +2,7 @@ package com.kaishengit.web;
 
 import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
+import com.kaishengit.service.NodeService;
 import com.kaishengit.service.TopicService;
 import com.kaishengit.util.Page;
 
@@ -24,9 +25,10 @@ public class HomeServlet extends BaseServlet {
         String p= req.getParameter("p");
 
         TopicService topicService = new TopicService();
+        NodeService nodeService = new NodeService();
         Page<Topic> page = topicService.findAllTopicBPANi(nodeId, p);
 
-        List<Node> nodeList = topicService.findAllNode();
+        List<Node> nodeList = nodeService.findAllNode();
 
         if (page == null) {
             forWard("index", req, resp);
