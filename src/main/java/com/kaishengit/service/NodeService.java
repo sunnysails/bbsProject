@@ -43,8 +43,9 @@ public class NodeService {
 
     /**
      * 添加新节点，或修改节点名称
+     *
      * @param nodeName 新节点名字
-     * @param nodeId 节点Id 判断是为新建或改名的依据。
+     * @param nodeId   节点Id 判断是为新建或改名的依据。
      */
     public void addOrUpdateNode(String nodeName, String nodeId) {
         if (nodeId.equals("null")) {
@@ -75,16 +76,6 @@ public class NodeService {
             return nodeDao.findById(Integer.valueOf(nodeId));
         } else {
             throw new ServiceException("参数错误");
-        }
-    }
-
-    public void updateNode(String nodeId, String nodeName) {
-        if (StringUtils.isNumeric(nodeId) && StringUtils.isNotEmpty(nodeName)) {
-            Node node = nodeDao.findById(Integer.valueOf(nodeId));
-            node.setNodeName(nodeName);
-            nodeDao.update(node);
-        } else {
-            throw new ServiceException("参数错误！");
         }
     }
 }

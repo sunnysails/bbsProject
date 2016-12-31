@@ -121,39 +121,42 @@ public class TopicService {
      * @param user    回复用户对象
      */
     public void addTopicReply(String topicId, String content, User user) {
-        if (StringUtils.isNumeric(topicId)) {
-            //新增回复到t_reply表
-            Reply reply = new Reply();
-            reply.setContent(content);
-            reply.setUserId(user.getId());
-            reply.setTopicId(Integer.valueOf(topicId));
-            replyDao.addReply(reply);
-            //更新t_topic表中的replynum 和 lastreplytime字段
-            Topic topic = topicDao.findById(Integer.valueOf(topicId));
-            if (topic != null) {
-                topic.setReplyNum(topic.getReplyNum() + 1);
-                Timestamp now = new Timestamp(DateTime.now().getMillis());
-                topic.setLastReplyTime(now);
-                topicDao.update(topic);
+        if (StringUtils.isNotEmpty(content)) {
+            if (StringUtils.isNumeric(topicId)) {
+                //新增回复到t_reply表
+                Reply reply = new Reply();
+                reply.setContent(content);
+                reply.setUserId(user.getId());
+                reply.setTopicId(Integer.valueOf(topicId));
+                replyDao.addReply(reply);
+                //更新t_topic表中的replynum 和 lastreplytime字段
+                Topic topic = topicDao.findById(Integer.valueOf(topicId));
+                if (topic != null) {
+                    topic.setReplyNum(topic.getReplyNum() + 1);
+                    Timestamp now = new Timestamp(DateTime.now().getMillis());
+                    topic.setLastReplyTime(now);
+                    topicDao.update(topic);
 
-                logger.info("{}在“{}”时间回复了主题为“{}”的帖子", user.getUserName(), now, topic.getTitle());
+                    logger.info("{}在“{}”时间回复了主题为“{}”的帖子", user.getUserName(), now, topic.getTitle());
+                } else {
+
+                    logger.info("ID“{}”帖子查询出错", topicId);
+                    throw new ServiceException("回复的帖子不存在或已被删除");
+                }
+                //新增回复通知
+                if (!user.getId().equals(topic.getUserId())) {
+                    Notify notify = new Notify();
+                    notify.setUserId(topic.getUserId());
+                    notify.setContent("您的主题 <a href=\"/topicDetail?topicid=" + topic.getId() + "\">[" + topic.getTitle() + "] </a> 有了新的回复,请查看.");
+                    notify.setState(Notify.NOTIFY_STATE_UNREAD);
+                    notifyDao.save(notify);
+                }
             } else {
-
-                logger.info("ID“{}”帖子查询出错", topicId);
-                throw new ServiceException("回复的帖子不存在或已被删除");
-            }
-            //新增回复通知
-            if (!user.getId().equals(topic.getUserId())) {
-                Notify notify = new Notify();
-                notify.setUserId(topic.getUserId());
-                notify.setContent("您的主题 <a href=\"/topicDetail?topicid=" + topic.getId() + "\">[" + topic.getTitle() + "] </a> 有了新的回复,请查看.");
-                notify.setState(Notify.NOTIFY_STATE_UNREAD);
-                notifyDao.save(notify);
+                logger.debug("{}", topicId);
+                throw new ServiceException("参数错误");
             }
         } else {
-
-            logger.debug("{}", topicId);
-            throw new ServiceException("参数错误");
+            throw new ServiceException("回复不能为空");
         }
     }
 
@@ -263,7 +266,7 @@ public class TopicService {
 
             Topic topic = topicDao.findById(tId);
             Integer oldNodeId = topic.getNodeId();
-            if (topic. isEdit()) {
+            if (topic.isEdit()) {
                 topic.setTitle(title);
                 topic.setContent(content);
                 topic.setNodeId(nId);

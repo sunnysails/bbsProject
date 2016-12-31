@@ -104,7 +104,7 @@
                     <div class="talk-item muted" style="font-size: 12px">
                         <i class="fa fa-plus"></i> 添加一条新回复
                     </div>
-                    <form id="replyForm" method="post" action="/newreply" style="padding: 15px;margin-bottom:0px;">
+                    <form id="replyForm" action="/newreply" method="post" style="padding: 15px;margin-bottom:0px;">
                         <input name="topicId" type="hidden" value="${topic.id}">
                         <textarea name="content" id="editor"></textarea>
                     </form>
@@ -143,11 +143,9 @@
             //optional options
         });
         </c:if>
-
         $("#replyBtn").click(function () {
             $("#replyForm").submit();
         });
-
         $("#favTopic").click(function () {
             var $this = $(this);
             var action = "";
@@ -157,30 +155,28 @@
             } else {
                 action = "unfav"
             }
-            $.post("/topicfav", {"topicId":${topic.id}, "action": action})
-                .done(function (json) {
-                    if (json.state == "success") {
-                        if (action == "fav") {
-                            swal({
-                                title: "取消收藏!",
-                                imageUrl: "/static/img/heart-down.png"
-                            });
-                            $this.text("取消收藏");
-                        } else {
-                            swal({
-                                title: "收藏成功!",
-                                imageUrl: "/static/img/heart-up.png"
-                            });
-                            $this.text("加入收藏");
-                        }
-                        $("#topicFav").text(json.data);
+            $.post("/topicfav", {"topicId":${topic.id}, "action": action}).done(function (json) {
+                if (json.state == "success") {
+                    if (action == "fav") {
+                        swal({
+                            title: "取消收藏!",
+                            imageUrl: "/static/img/heart-down.png"
+                        });
+                        $this.text("取消收藏");
                     } else {
-                        swal("操作失败,请稍候再试", "", "error");
+                        swal({
+                            title: "收藏成功!",
+                            imageUrl: "/static/img/heart-up.png"
+                        });
+                        $this.text("加入收藏");
                     }
-                })
-                .error(function () {
+                    $("#topicFav").text(json.data);
+                } else {
                     swal("操作失败,请稍候再试", "", "error");
-                });
+                }
+            }).error(function () {
+                swal("操作失败,请稍候再试", "", "error");
+            });
         });
 
         $("#topicTime").text(moment($("#topicTime").text()).fromNow());

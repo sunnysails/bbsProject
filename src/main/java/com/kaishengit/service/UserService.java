@@ -12,9 +12,8 @@ import com.kaishengit.entity.LoginLog;
 import com.kaishengit.entity.Notify;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
-import com.kaishengit.util.Config;
-import com.kaishengit.util.EmailUtil;
-import com.kaishengit.util.StringUtils;
+import com.kaishengit.util.*;
+import com.kaishengit.vo.UserVo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -328,6 +327,27 @@ public class UserService {
             notify.setState(Notify.NOTIFY_STATE_READ);
             notify.setReadTime(new Timestamp(DateTime.now().getMillis()));
             notifyDao.update(notify);
+        }
+    }
+
+    public Page<UserVo> findUserList(String p) {
+        Integer pageNo = StringUtils.isNumeric(p) ? Integer.parseInt(p) : 1;
+        Integer count = userDao.count();
+        Page<UserVo> page = new Page<>(count, pageNo);
+        List<UserVo> userVoList = userDao.findUserVoByPageNo(page.getStart(), Page.PAGE);
+        page.setItems(userVoList);
+        return page;
+    }
+
+    public void updateState(String id, String state) {
+        if (StringUtils.isNumeric(id) && StringUtils.isNumeric(state)) {
+            Integer s = Integer.valueOf(state) == 1 ? 2 : 1;
+            User user = userDao.findById(Integer.valueOf(id));
+            user.setState(s);
+            userDao.update(user);
+            logger.info("更改了用户：{}，的状态码为{}",user.getUserName(),state);
+        } else {
+            throw new ServiceException("参数错误！");
         }
     }
 }

@@ -2,7 +2,12 @@ package com.kaishengit.dao;
 
 import com.kaishengit.entity.User;
 import com.kaishengit.util.DbHelp;
+import com.kaishengit.vo.UserVo;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
+
+import java.util.List;
 
 /**
  * Created by sunny on 2016/12/15.
@@ -36,5 +41,15 @@ public class UserDao {
     public void update(User user) {
         String sql = "update t_user set password=?,email=?,phone=?,state=?,avatar=? where id = ?";
         DbHelp.update(sql, user.getPassWord(), user.getEmail(), user.getPhone(), user.getState(), user.getAvatar(), user.getId());
+    }
+
+    public Integer count() {
+        String sql = "select count(*) from t_user where state != 0 order by id";
+        return DbHelp.query(sql,new ScalarHandler<Long>()).intValue();
+    }
+
+    public List<UserVo> findUserVoByPageNo(int start, Integer page) {
+        String sql = "SELECT tu.id,tu.username,tu.email,tu.phone,tu.state,tu.createtime,tu.avatar,tll.logintime,tll.ip,max(tll.logintime) FROM t_login_log tll ,t_user tu GROUP BY tu.id LIMIT ?,?";
+        return DbHelp.query(sql,new BeanListHandler<UserVo>(UserVo.class),start,page);
     }
 }

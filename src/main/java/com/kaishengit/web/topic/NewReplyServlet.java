@@ -1,5 +1,6 @@
 package com.kaishengit.web.topic;
 
+import com.kaishengit.dto.JsonResult;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.service.TopicService;
@@ -21,15 +22,13 @@ public class NewReplyServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String topicId = req.getParameter("topicId");
         String content = req.getParameter("content");
-
         User user = getCurrentUser(req);
         TopicService topicService = new TopicService();
         try {
             topicService.addTopicReply(topicId, content, user);
         } catch (ServiceException e) {
-            resp.sendError(404);
-            System.out.println(e.getMessage());
-            //TODO logger
+            resp.sendError(404,e.getMessage());
+            return;
         }
         resp.sendRedirect("/topicdetail?topicId="+topicId);
     }
