@@ -25,7 +25,7 @@
 <%@include file="../include/adminnavbar.jsp"%>
 <!--header-bar end-->
 <div class="container-fluid mt20">
-    <a href="javascript:;" id="addNode" class="btn btn-success">添加新节点</a>
+    <a href="javascript:;" id="addNode" rel=null class="updateNode btn btn-success">添加新节点</a>
     <table class="table">
         <thead>
         <tr>
@@ -38,7 +38,7 @@
             <tr>
                 <td>${node.nodeName}</td>
                 <td>
-                    <a href="/admin/nodeUpdate?nodeId=${node.id}">修改</a>
+                    <a href="javascript:;" rel="${node.id}" class="updateNode">修改</a>
                     <a href="javascript:;" rel="${node.id}" class="delNode">删除</a>
                 </td>
             </tr>

@@ -1,8 +1,8 @@
 $(function () {
-    $("#addNode").click(function () {
+    $(".updateNode").click(function () {
+        var nodeId = $(this).attr("rel");
         swal({
-            title: "请输入新节点!",
-            text: "不能添加已经存在的节点",
+            title: "请输入新节点名称!",
             type: "input",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -11,12 +11,12 @@ $(function () {
         }, function (inputValue) {
             if (inputValue === false) return false;
             if (inputValue === "") {
-                swal.showInputError("新节点不能为空");
+                swal.showInputError("节点名称不能为空");
                 return false
             }
             swal({
-                title: "新节点：" + inputValue,
-                text: "确定要建立该节点?",
+                title: "新节点名称：" + inputValue,
+                text: "确定要建立或更改节点名称?",
                 showConfirmButton: true,
                 showCancelButton: true,
                 closeOnConfirm: false
@@ -24,11 +24,11 @@ $(function () {
                 $.ajax({
                     url: "/admin/addnode",
                     type: "post",
-                    data: {"inputValue": inputValue},
+                    data: {"inputValue": inputValue,"nodeId":nodeId},
                     success: function (data) {
                         if (data.state == 'success') {
                             swal({
-                                title: "成功创建新节点!",
+                                title: "更新节点名称成功!",
                                 type: "success",
                                 timer: 1000,
                                 showConfirmButton: false,
@@ -38,17 +38,16 @@ $(function () {
                                 window.history.go(0);
                             });
                         } else {
-                            swal("创建失败", data.message, "error");
+                            swal("更新失败", data.message, "error");
                         }
                     },
                     error: function () {
-                        swal("服务器异常,创建失败!", "", "error");
+                        swal("服务器异常,更新失败!", "", "error");
                     }
                 });
             });
         });
     });
-
 
     $(".delNode").click(function () {
         var id = $(this).attr("rel");

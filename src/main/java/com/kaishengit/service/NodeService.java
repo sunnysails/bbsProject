@@ -3,7 +3,6 @@ package com.kaishengit.service;
 import com.kaishengit.dao.NodeDao;
 import com.kaishengit.entity.Node;
 import com.kaishengit.exception.ServiceException;
-import com.kaishengit.util.DbHelp;
 import com.kaishengit.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +41,50 @@ public class NodeService {
         }
     }
 
-    public void addNode(String nodeName) {
-        if (nodeDao.findByNodeName(nodeName) == null) {
-            Node node = new Node();
-            node.setNodeName(nodeName);
-            nodeDao.addNode(node);
-            logger.info("添加了新节点{}", nodeName);
+    /**
+     * 添加新节点，或修改节点名称
+     * @param nodeName 新节点名字
+     * @param nodeId 节点Id 判断是为新建或改名的依据。
+     */
+    public void addOrUpdateNode(String nodeName, String nodeId) {
+        if (nodeId.equals("null")) {
+            if (nodeDao.findByNodeName(nodeName) == null) {
+                Node node = new Node();
+                node.setNodeName(nodeName);
+                nodeDao.addNode(node);
+                logger.info("添加了新节点{}", nodeName);
+            } else {
+                throw new ServiceException("节点已存在，不能重复创建！");
+            }
+        } else if (StringUtils.isNumeric(nodeId)) {
+            Node node = nodeDao.findById(Integer.valueOf(nodeId));
+            if (node.getNodeName().equals(nodeName) || nodeDao.findByNodeName(nodeName) == null) {
+                node.setNodeName(nodeName);
+                logger.info("更改了节点名称{}==>{}", node.getNodeName(), nodeName);
+                nodeDao.update(node);
+            } else {
+                throw new ServiceException("节点已存在，不能重复！");
+            }
         } else {
-            throw new ServiceException("节点已存在，不能重复创建！");
+            throw new ServiceException("参数错误！");
+        }
+    }
+
+    public Node findNodeById(String nodeId) {
+        if (StringUtils.isNumeric(nodeId)) {
+            return nodeDao.findById(Integer.valueOf(nodeId));
+        } else {
+            throw new ServiceException("参数错误");
+        }
+    }
+
+    public void updateNode(String nodeId, String nodeName) {
+        if (StringUtils.isNumeric(nodeId) && StringUtils.isNotEmpty(nodeName)) {
+            Node node = nodeDao.findById(Integer.valueOf(nodeId));
+            node.setNodeName(nodeName);
+            nodeDao.update(node);
+        } else {
+            throw new ServiceException("参数错误！");
         }
     }
 }
