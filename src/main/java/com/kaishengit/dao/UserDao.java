@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDao {
     //存储user
     public void save(User user) {
-        String sql = "INSERT INTO t_user(username, password, email, phone, state, avatar) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO t_user (username, password, email, phone, state, avatar) VALUES (?, ?, ?, ?, ?, ?)";
         DbHelp.update(sql, user.getUserName(), user.getPassWord(), user.getEmail(), user.getPhone(), user.getState(), user.getAvatar());
     }
 
@@ -39,17 +39,35 @@ public class UserDao {
 
     //更改账户信息
     public void update(User user) {
-        String sql = "update t_user set password=?,email=?,phone=?,state=?,avatar=? where id = ?";
+        String sql = "UPDATE t_user\n" +
+                "SET password = ?, email = ?, phone = ?, state = ?, avatar = ?\n" +
+                "WHERE id = ?";
         DbHelp.update(sql, user.getPassWord(), user.getEmail(), user.getPhone(), user.getState(), user.getAvatar(), user.getId());
     }
 
     public Integer count() {
-        String sql = "select count(*) from t_user where state != 0 order by id";
+        String sql = "SELECT count(*)\n" +
+                "FROM t_user\n" +
+                "WHERE state != 0\n" +
+                "ORDER BY id";
         return DbHelp.query(sql,new ScalarHandler<Long>()).intValue();
     }
 
     public List<UserVo> findUserVoByPageNo(int start, Integer page) {
-        String sql = "SELECT tu.id,tu.username,tu.email,tu.phone,tu.state,tu.createtime,tu.avatar,tll.logintime,tll.ip,max(tll.logintime) FROM t_login_log tll ,t_user tu GROUP BY tu.id LIMIT ?,?";
+        String sql = "SELECT\n" +
+                "  tu.id,\n" +
+                "  tu.username,\n" +
+                "  tu.email,\n" +
+                "  tu.phone,\n" +
+                "  tu.state,\n" +
+                "  tu.createtime,\n" +
+                "  tu.avatar,\n" +
+                "  tll.logintime,\n" +
+                "  tll.ip,\n" +
+                "  max(tll.logintime)\n" +
+                "FROM t_login_log tll, t_user tu\n" +
+                "GROUP BY tu.id\n" +
+                "LIMIT ?, ?";
         return DbHelp.query(sql,new BeanListHandler<UserVo>(UserVo.class),start,page);
     }
 }

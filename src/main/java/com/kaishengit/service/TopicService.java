@@ -5,6 +5,7 @@ import com.kaishengit.entity.*;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Page;
 import com.kaishengit.util.StringUtils;
+import com.kaishengit.vo.TopicReplyCountVo;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +25,6 @@ public class TopicService {
     private ReplyDao replyDao = new ReplyDao();
     private FavDao favDao = new FavDao();
     private NotifyDao notifyDao = new NotifyDao();
-
-    /**
-     * 查询所有帖子信息，并返回完整的topic对象集合（包含user，node信息）。
-     *
-     * @return topic 集合
-     */
-    public List<Topic> findAllTopic() {
-
-        List<Topic> topicList = topicDao.findAll();
-
-        logger.debug("查询所有帖子信息");
-        return topicList;
-    }
 
     /**
      * 存储新帖子并返回该 Topic 对象
@@ -147,7 +135,7 @@ public class TopicService {
                 if (!user.getId().equals(topic.getUserId())) {
                     Notify notify = new Notify();
                     notify.setUserId(topic.getUserId());
-                    notify.setContent("您的主题 <a href=\"/topicDetail?topicid=" + topic.getId() + "\">[" + topic.getTitle() + "] </a> 有了新的回复,请查看.");
+                    notify.setContent("您的主题 <a href=\"/topicdetail?topicId=" + topic.getId() + "\">[" + topic.getTitle() + "] </a> 有了新的回复,请查看.");
                     notify.setState(Notify.NOTIFY_STATE_UNREAD);
                     notifyDao.save(notify);
                 }
@@ -179,6 +167,8 @@ public class TopicService {
 
             logger.debug("当前所有帖子总数量{}...", count);
         }
+        count = count == 0 ? 1 : count;
+
         List<Topic> topicList = null;
         Page<Topic> topicPageList = new Page<>(count, p);
 
@@ -292,5 +282,14 @@ public class TopicService {
             logger.error("错误");
             throw new ServiceException("参数错误！");
         }
+    }
+
+    public Page<TopicReplyCountVo> getTopicAndReplyNumByDayList(String p) {
+        Integer pageNo = StringUtils.isNumeric(p) ? Integer.valueOf(p) : 1;
+        int count = topicDao.countTopicByDay();
+        Page<TopicReplyCountVo> page = new Page<>(count, pageNo);
+        List<TopicReplyCountVo> topicReplyCountVoList = topicDao.getTopicAndReplyNumList(page.getStart(), Page.PAGE);
+        page.setItems(topicReplyCountVoList);
+        return page;
     }
 }

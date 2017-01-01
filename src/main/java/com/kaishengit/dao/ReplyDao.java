@@ -6,7 +6,6 @@ import com.kaishengit.util.DbHelp;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.handlers.AbstractListHandler;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,7 +21,13 @@ public class ReplyDao {
      * @return 回复列表集
      */
     public List<Reply> findListByTopicId(String topicId) {
-        String sql = "SELECT tu.id,tu.avatar,tu.username,tr.* FROM t_reply tr ,t_user tu WHERE tr.userid = tu.id AND topicid = ?";
+        String sql = "SELECT\n" +
+                "  tu.id,\n" +
+                "  tu.avatar,\n" +
+                "  tu.username,\n" +
+                "  tr.*\n" +
+                "FROM t_reply tr, t_user tu\n" +
+                "WHERE tr.userid = tu.id AND topicid = ?";
         return DbHelp.query(sql, new AbstractListHandler<Reply>() {
             @Override
             protected Reply handleRow(ResultSet rs) throws SQLException {
@@ -45,6 +50,6 @@ public class ReplyDao {
 
     public void delByTopicId(String topicId) {
         String sql = "DELETE FROM t_reply WHERE topicid = ?";
-        DbHelp.update(sql,topicId);
+        DbHelp.update(sql, topicId);
     }
 }

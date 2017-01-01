@@ -12,7 +12,7 @@ public class UserVo {
     private String phone;
     private String avatar;
     private Timestamp createtime;
-    private Integer ip;
+    private String  ip;
     private String logintime;
     private Integer state;
 
@@ -64,11 +64,11 @@ public class UserVo {
         this.createtime = createtime;
     }
 
-    public Integer getIp() {
+    public String  getIp() {
         return ip;
     }
 
-    public void setIp(Integer ip) {
+    public void setIp(String  ip) {
         this.ip = ip;
     }
 

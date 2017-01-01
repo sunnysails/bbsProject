@@ -9,17 +9,20 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
  */
 public class FavDao {
     public Fav findById(Integer userId, Integer topicId) {
-        String sql = "select * from t_fav where userid = ? and topicid = ?";
+        String sql = "SELECT *\n" +
+                "FROM t_fav\n" +
+                "WHERE userid = ? AND topicid = ?";
         return DbHelp.query(sql, new BeanHandler<Fav>(Fav.class), userId, topicId);
     }
 
     public void addFav(Fav fav) {
-        String sql = "insert into t_fav (userid,topicid)values (?,?)";
+        String sql = "INSERT INTO t_fav (userid, topicid) VALUES (?, ?)";
         DbHelp.update(sql, fav.getUserId(), fav.getTopicId());
     }
 
     public void deleteFavById(Integer userId, Integer topicId) {
-        String sql = "delete from t_fav where userid = ? and topicid = ?";
+        String sql = "DELETE FROM t_fav\n" +
+                "WHERE userid = ? AND topicid = ?";
         DbHelp.update(sql, userId, topicId);
     }
 }

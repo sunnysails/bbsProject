@@ -1,6 +1,5 @@
 package com.kaishengit.entity;
 
-import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Config;
 import org.joda.time.DateTime;
 

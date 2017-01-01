@@ -27,12 +27,15 @@ public class NodeDao {
     }
 
     public void update(Node node) {
-        String sql = "update t_node set nodename = ?, topicnum = ? where id = ?";
+        String sql = "UPDATE t_node\n" +
+                "SET nodename = ?, topicnum = ?\n" +
+                "WHERE id = ?";
         DbHelp.update(sql, node.getNodeName(), node.getTopicNum(), node.getId());
     }
 
     public void delById(String nodeId) {
-        String sql = "delete from t_node where id = ?";
+        String sql = "DELETE FROM t_node\n" +
+                "WHERE id = ?";
         DbHelp.update(sql,nodeId);
     }
 

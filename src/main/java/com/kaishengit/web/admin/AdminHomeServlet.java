@@ -1,5 +1,8 @@
 package com.kaishengit.web.admin;
 
+import com.kaishengit.service.TopicService;
+import com.kaishengit.util.Page;
+import com.kaishengit.vo.TopicReplyCountVo;
 import com.kaishengit.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -15,6 +18,9 @@ import java.io.IOException;
 public class AdminHomeServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String p = req.getParameter("p");
+        Page<TopicReplyCountVo> page = new TopicService().getTopicAndReplyNumByDayList(p);
+req.setAttribute("page",page);
         forWard("admin/home",req,resp);
     }
 }

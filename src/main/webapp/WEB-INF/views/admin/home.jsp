@@ -31,8 +31,8 @@
         <c:forEach items="${page.items}" var="count">
             <tr>
                 <td>${count.time}</td>
-                <td>${count.topicNum}</td>
-                <td>${count.replyNum}</td>
+                <td>${count.topicnum}</td>
+                <td>${count.replynum}</td>
             </tr>
         </c:forEach>
 
