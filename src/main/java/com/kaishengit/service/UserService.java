@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * Created by sunny on 2016/12/15.
  */
 public class UserService {
-    private String emailUrl=Config.get("email.url");
+    private static final String URL = Config.get("url");
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
     private LoginLogDao loginLogDao = new LoginLogDao();
@@ -123,7 +123,7 @@ public class UserService {
             public void run() {
                 //多线程后台给用户发送电子邮件
                 String uuid = UUID.randomUUID().toString();
-                String url = emailUrl + uuid;
+                String url = URL + "/user/active?_=" + uuid;
                 //放入缓存并等待6小时
                 cache.put(uuid, userName);
                 String html = "<h3>Dear " + userName + ":</h3>请点击<a href='" + url + "'>该链接</a>去激活你的账号. <br> sun";
@@ -188,7 +188,7 @@ public class UserService {
                         @Override
                         public void run() {
                             String uuid = UUID.randomUUID().toString();
-                            String url = emailUrl + uuid;
+                            String url = URL + "user/restpassword?token=" + uuid;
 
                             fondCache.put(uuid, user.getUserName());
 
@@ -346,7 +346,7 @@ public class UserService {
             User user = userDao.findById(Integer.valueOf(id));
             user.setState(s);
             userDao.update(user);
-            logger.info("更改了用户：{}，的状态码为{}",user.getUserName(),state);
+            logger.info("更改了用户：{}，的状态码为{}", user.getUserName(), state);
         } else {
             throw new ServiceException("参数错误！");
         }
