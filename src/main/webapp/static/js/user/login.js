@@ -25,6 +25,9 @@ $(function () {
             },
             passWord: {
                 required: true
+            },
+            validatecode:{
+                required: true
             }
         },
         messages: {
@@ -33,8 +36,15 @@ $(function () {
             },
             passWord: {
                 required: "请输入密码"
+            },
+            validatecode:{
+                required: "请输入验证码"
             }
         },
+        errorPlacement: function(error, element) { //错误信息位置设置方法
+            error.appendTo( element.parent()); //这里的element是录入数据的对象
+        },
+
         submitHandler: function (form) {
             $.ajax({
                 url: "/login",

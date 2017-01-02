@@ -92,16 +92,6 @@ public class TopicService {
     }
 
     /**
-     * 返回一个reply集合
-     *
-     * @param topicId 需要查询的帖子的ID
-     * @return replyList
-     */
-    public List<Reply> findReplyListByTopicId(String topicId) {
-        return replyDao.findListByTopicId(topicId);
-    }
-
-    /**
      * 添加新回复
      *
      * @param topicId 回复帖子ID
@@ -291,5 +281,19 @@ public class TopicService {
         List<TopicReplyCountVo> topicReplyCountVoList = topicDao.getTopicAndReplyNumList(page.getStart(), Page.PAGE);
         page.setItems(topicReplyCountVoList);
         return page;
+    }
+
+    public Page<Reply> findReplyListByPATi(String p, String topicId) {
+        if (StringUtils.isNumeric(topicId)) {
+            Integer pageNo = StringUtils.isNumeric(p) ? Integer.valueOf(p) : 1;
+            Topic topic = topicDao.findById(Integer.valueOf(topicId));
+            int count = topic.getReplyNum() == 0 ? 1 : topic.getReplyNum();
+            Page<Reply> page = new Page<>(count, pageNo);
+            List<Reply> replyList = replyDao.findReplyListByATiP(topicId, page.getStart(), Page.PAGE);
+            page.setItems(replyList);
+            return page;
+        } else {
+            throw new ServiceException("参数错误！");
+        }
     }
 }

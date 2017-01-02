@@ -74,9 +74,9 @@
 
     <div class="box" style="margin-top:20px;">
         <div class="talk-item muted" style="font-size: 12px">
-            ${fn:length(replyList)}个回复 | 直到 <span id="lastReplyTime">${requestScope.topic.lastReplyTime}</span>
+            ${fn:length(page.items)}个回复 | 直到 <span id="lastReplyTime">${requestScope.topic.lastReplyTime}</span>
         </div>
-        <c:forEach items="${replyList}" var="reply">
+        <c:forEach items="${page.items}" var="reply">
             <div class="talk-item">
                 <table class="talk-table">
                     <tr>
@@ -90,13 +90,17 @@
                             <p style="font-size: 14px">${reply.content}</p>
                         </td>
                         <td width="70" align="right" style="font-size: 12px">
-                            <a href="javascript:;" rel="${vs.count}" class="replyLink" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
+                            <a href="javascript:;" rel="${vs.count}" class="replyLink" title="回复"><i
+                                    class="fa fa-reply"></i></a>&nbsp;
                             <span class="badge">${vs.count}</span>
                         </td>
                     </tr>
                 </table>
             </div>
         </c:forEach>
+        <div class="pagination pagination-mini pagination-centered">
+            <ul id="pagination" style="margin-bottom:20px;"></ul>
+        </div>
         <c:choose>
             <c:when test="${not empty sessionScope.curr_user}">
                 <div class="box" style="margin:20px 0px;">
@@ -134,6 +138,7 @@
 <script src="/static/js/highlight.pack.js"></script>
 <script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script src="//cdn.bootcss.com/moment.js/2.10.6/locale/zh-cn.js"></script>
+<script src="/static/js/jquery.twbsPagination.min.js"></script>
 <script>
     $(function () {
         <c:if test="${not empty sessionScope.curr_user}">
@@ -142,12 +147,22 @@
             toolbar: false
             //optional options
         });
-
-
         </c:if>
+
+        $("#pagination").twbsPagination({
+            totalPages:${page.totalPage},
+            visiblePages:5,
+            first: '首页',
+            last: '末页',
+            prev: '上一页',
+            next: '下一页',
+            href: '?p={{number}}&topicId=${param.topicId}'
+        });
+
         $("#replyBtn").click(function () {
             $("#replyForm").submit();
         });
+
         $("#favTopic").click(function () {
             var $this = $(this);
             var action = "";

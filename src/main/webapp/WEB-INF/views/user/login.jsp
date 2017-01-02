@@ -55,14 +55,23 @@
                 </div>
             </div>
             <div class="control-group">
+                <label class="control-label">验证码</label>
+                <div class="controls">
+                    <input style="width: 100px" id="validatecode" name="validatecode" type="text"/>
+                    <img title="看不清楚,换一张？" style="cursor: pointer; margin-left: 20px;"
+                         onclick="javascript:refresh(this);"
+                         src="/validatecode.png">
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label"></label>
                 <div class="controls">
                     <a href="foundpassword">忘记密码</a>
                 </div>
             </div>
+
             <div class="form-actions">
                 <button id="loginBtn" class="btn btn-primary">登录</button>
-
                 <a class="pull-right" href="/reg">注册账号</a>
             </div>
         </form>
@@ -75,5 +84,10 @@
 <script src="/static/js/dist/sweetalert-dev.js"></script>
 <script language=javascript src="/static/js/password.js"></script>
 <script type="text/javascript" src="/static/js/user/login.js"></script>
+<script>
+    function refresh(obj) {
+        obj.src = "/validatecode.png?" + Math.random();
+    }
+</script>
 </body>
 </html>

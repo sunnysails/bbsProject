@@ -29,10 +29,11 @@ import java.util.concurrent.TimeUnit;
  * Created by sunny on 2016/12/15.
  */
 public class UserService {
+    private String emailUrl=Config.get("email.url");
+
     private Logger logger = LoggerFactory.getLogger(UserService.class);
     private LoginLogDao loginLogDao = new LoginLogDao();
     private NotifyDao notifyDao = new NotifyDao();
-
     private UserDao userDao = new UserDao();
 
     //发送激活邮件的TOKEN缓存
@@ -122,7 +123,7 @@ public class UserService {
             public void run() {
                 //多线程后台给用户发送电子邮件
                 String uuid = UUID.randomUUID().toString();
-                String url = "http://www.aaa.com/user/active?_=" + uuid;
+                String url = emailUrl + uuid;
                 //放入缓存并等待6小时
                 cache.put(uuid, userName);
                 String html = "<h3>Dear " + userName + ":</h3>请点击<a href='" + url + "'>该链接</a>去激活你的账号. <br> sun";
@@ -187,7 +188,7 @@ public class UserService {
                         @Override
                         public void run() {
                             String uuid = UUID.randomUUID().toString();
-                            String url = "http://www.aaa.com/user/restpassword?token=" + uuid;
+                            String url = emailUrl + uuid;
 
                             fondCache.put(uuid, user.getUserName());
 

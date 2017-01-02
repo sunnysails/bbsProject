@@ -1,5 +1,6 @@
 package com.kaishengit.dao;
 
+import com.kaishengit.entity.Reply;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.util.DbHelp;
@@ -104,4 +105,5 @@ public class TopicDao {
 
         return DbHelp.query(sql, new BeanListHandler<TopicReplyCountVo>(TopicReplyCountVo.class), start, page);
     }
+
 }

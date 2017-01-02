@@ -1,15 +1,15 @@
 package com.kaishengit.web;
 
-import com.kaishengit.vo.RandomValidateCode;
+import com.kaishengit.util.RandomValidateCode;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-public class ImageServlet extends HttpServlet {
+@WebServlet("/validatecode.png")
+public class ImageServlet extends BaseServlet {
 
     private static final long serialVersionUID = 1L;
 

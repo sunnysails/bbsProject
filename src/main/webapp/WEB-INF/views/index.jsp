@@ -71,7 +71,7 @@
     $(function () {
         $("#pagination").twbsPagination({
             totalPages:${page.totalPage},
-            visiblePages: ${page.totalPage},
+            visiblePages: 5,
             first: '首页',
             last: '末页',
             prev: '上一页',

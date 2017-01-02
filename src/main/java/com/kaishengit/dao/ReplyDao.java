@@ -14,20 +14,34 @@ import java.util.List;
  * Created by sunny on 2016/12/23.
  */
 public class ReplyDao {
+
+    public void addReply(Reply reply) {
+        String sql = "INSERT INTO t_reply (content, userid, topicid) VALUES(?,?,?)";
+        DbHelp.insert(sql, reply.getContent(), reply.getUserId(), reply.getTopicId());
+    }
+
+    public void delByTopicId(String topicId) {
+        String sql = "DELETE FROM t_reply WHERE topicid = ?";
+        DbHelp.update(sql, topicId);
+    }
+
     /**
-     * 通过topicId查找回复列表，及回复用户简单信息
+     * 根据topicId 和page查询新的回复页面
      *
      * @param topicId 帖子Id
-     * @return 回复列表集
+     * @param start
+     * @param page
+     * @return 结果页面信息
      */
-    public List<Reply> findListByTopicId(String topicId) {
+    public List<Reply> findReplyListByATiP(String topicId, int start, Integer page) {
         String sql = "SELECT\n" +
                 "  tu.id,\n" +
                 "  tu.avatar,\n" +
                 "  tu.username,\n" +
                 "  tr.*\n" +
                 "FROM t_reply tr, t_user tu\n" +
-                "WHERE tr.userid = tu.id AND topicid = ?";
+                "WHERE tr.userid = tu.id AND topicid = ?\n" +
+                "LIMIT ?, ?";
         return DbHelp.query(sql, new AbstractListHandler<Reply>() {
             @Override
             protected Reply handleRow(ResultSet rs) throws SQLException {
@@ -40,16 +54,6 @@ public class ReplyDao {
                 reply.setUser(user);
                 return reply;
             }
-        }, topicId);
-    }
-
-    public void addReply(Reply reply) {
-        String sql = "INSERT INTO t_reply (content, userid, topicid) VALUES(?,?,?)";
-        DbHelp.insert(sql, reply.getContent(), reply.getUserId(), reply.getTopicId());
-    }
-
-    public void delByTopicId(String topicId) {
-        String sql = "DELETE FROM t_reply WHERE topicid = ?";
-        DbHelp.update(sql, topicId);
+        }, topicId, start, page);
     }
 }

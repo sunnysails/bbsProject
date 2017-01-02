@@ -1,4 +1,4 @@
-package com.kaishengit.vo;
+package com.kaishengit.util;
 
 import java.awt.Color;
 import java.awt.Font;
