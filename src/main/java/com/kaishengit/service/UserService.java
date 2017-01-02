@@ -123,7 +123,7 @@ public class UserService {
             public void run() {
                 //多线程后台给用户发送电子邮件
                 String uuid = UUID.randomUUID().toString();
-                String url = URL + "/user/active?_=" + uuid;
+                String url = URL + "user/active?_=" + uuid;
                 //放入缓存并等待6小时
                 cache.put(uuid, userName);
                 String html = "<h3>Dear " + userName + ":</h3>请点击<a href='" + url + "'>该链接</a>去激活你的账号. <br> sun";
