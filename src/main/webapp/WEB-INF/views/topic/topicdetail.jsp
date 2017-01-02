@@ -90,8 +90,8 @@
                             <p style="font-size: 14px">${reply.content}</p>
                         </td>
                         <td width="70" align="right" style="font-size: 12px">
-                            <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                            <span class="badge">1</span>
+                            <a href="javascript:;" rel="${vs.count}" class="replyLink" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
+                            <span class="badge">${vs.count}</span>
                         </td>
                     </tr>
                 </table>
@@ -142,6 +142,8 @@
             toolbar: false
             //optional options
         });
+
+
         </c:if>
         $("#replyBtn").click(function () {
             $("#replyForm").submit();

@@ -6,14 +6,6 @@
         </encoder>
     </appender>
 
-    <!--<appender name="fileOut" class="ch.qos.logback.core.FileAppender">
-        <file>D:/logback.log</file>
-        <append>true</append>
-        <encoder>
-            <pattern>%d{MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>-->
-
     <property name="LOG_HOME" value="E:/logs"/>
 
     <appender name="dailyOut" class="ch.qos.logback.core.rolling.RollingFileAppender">

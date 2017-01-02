@@ -25,7 +25,7 @@ public class NewReplyServlet extends BaseServlet {
         try {
             topicService.addTopicReply(topicId, content, user);
         } catch (ServiceException e) {
-            resp.sendError(404,e.getMessage());
+            resp.sendError(501,e.getMessage());
             return;
         }
         resp.sendRedirect("/topicdetail?topicId="+topicId);

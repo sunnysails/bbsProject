@@ -26,12 +26,11 @@
         <init-param>
             <param-name>validateUrl</param-name>
             <!-- /setting,/post/new,/notifiy,... -->
-            <param-value>/setting,/newtopic,/topicedit,/topicfav,/notify</param-value>
+            <param-value>/setting,/newtopic,/topicedit,/topicfav,/notify,/newreply</param-value>
         </init-param>
 
         <init-param>
             <param-name>validateAdminUrl</param-name>
-            <!-- /setting,/post/new,/notifiy,... -->
             <param-value>/admin/topic,/admin/home,/admin/user,/admin/node,/admin/nodeUpdate,/admin/nodeDel</param-value>
         </init-param>
     </filter>
@@ -39,6 +38,34 @@
         <filter-name>loginFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!-- 配置session的过期时间（分钟） -->
+    <session-config>
+        <session-timeout>20</session-timeout>
+    </session-config>
+
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>501</error-code>
+        <location>/WEB-INF/views/error/501.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <exception-type>
+            com.kaishengit.exception.DataAccessException
+        </exception-type>
+        <location>/WEB-INF/views/error/db.jsp</location>
+    </error-page>
 
     <display-name>Archetype Created Web Application</display-name>
 </web-app>

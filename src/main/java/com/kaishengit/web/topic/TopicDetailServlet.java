@@ -43,8 +43,6 @@ public class TopicDetailServlet extends BaseServlet {
             forWard("topic/topicdetail", req, resp);
         } catch (ServiceException e) {
             resp.sendError(404, e.getMessage());
-            System.out.println(e.getMessage());
-            //TODO logger
         }
     }
 }

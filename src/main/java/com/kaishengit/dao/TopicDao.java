@@ -33,7 +33,6 @@ public class TopicDao {
     public Integer save(Topic topic) {
         String sql = "INSERT INTO t_topic (title, content, lastreplytime, userid, nodeid) VALUES (?, ?, ?, ?, ?)";
         return DbHelp.insert(sql, topic.getTitle(), topic.getContent(), topic.getLastReplyTime(), topic.getUserId(), topic.getNodeId());
-        //TODO node数量加！！
     }
 
     public Topic findById(Integer topicId) {

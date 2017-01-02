@@ -35,7 +35,7 @@
 
         <c:forEach items="${page.items}" var="topic">
             <tr>
-                <td><a href="/topicDetail?topicid=${topic.id}" target="_blank">${topic.title}</a></td>
+                <td><a href="/topicdetail?topicId=${topic.id}" target="_blank">${topic.title}</a></td>
                 <td>${topic.user.userName}</td>
                 <td>${topic.createTime}</td>
                 <td>${topic.replyNum}</td>
