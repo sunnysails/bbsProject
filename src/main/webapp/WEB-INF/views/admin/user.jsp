@@ -12,8 +12,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/js/dist/sweetalert.css" rel="stylesheet">
 </head>
 <script>
@@ -64,7 +64,7 @@
             last: '末页',
             prev: '上一页',
             next: '下一页',
-            href: '?p={{number}}'
+            href: '?p={{number}}&_=${param._}'
         });
 
         $(".update").click(function () {

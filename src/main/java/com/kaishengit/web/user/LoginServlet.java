@@ -31,7 +31,6 @@ public class LoginServlet extends BaseServlet {
         String validatecode = req.getParameter("validatecode");
         JsonResult result = new JsonResult();
         if (RandomValidateCode.validateCode != null && validatecode.trim().toUpperCase().equals(RandomValidateCode.validateCode)) {
-            System.out.println("验证码正确");
             //获取客户端Ip
             String ip = req.getLocalAddr();
             UserService userService = new UserService();

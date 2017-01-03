@@ -12,8 +12,8 @@
 <head>
     <meta charset="UTF-8">
     <title>设置</title>
-    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/js/uploader/webuploader.css">
     <link rel="stylesheet" href="/static/js/dist/sweetalert.css">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -64,7 +64,7 @@
             <div class="control-group">
                 <label class="control-label">新密码</label>
                 <div class="controls">
-                    <input type="password" name="passWord" id="passWord" onKeyUp=pwStrength(this.value)
+                    <input type="password" name="newPassWord" id="newPassWord" onKeyUp=pwStrength(this.value)
                            onBlur=pwStrength(this.value)>
                     <table>
                         <tr align="center" bgcolor="#f5f5f5">

@@ -44,7 +44,7 @@ public class RandomValidateCode {
         return new Color(r, g, b);
     }
 
-    /**
+    /*
      * 生成随机图片
      */
     public void getRandcode(HttpServletRequest request,

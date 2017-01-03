@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -60,13 +61,17 @@ public class SettingServlet extends BaseServlet {
         String newPassWord = req.getParameter("newPassWord");
 
         User user = getCurrentUser(req);
+
         try {
             UserService userService = new UserService();
-            userService.updatePassWord(user, oldPassWord, newPassWord);
+            User u = userService.findById(user.getId());
+            userService.updatePassWord(u, oldPassWord, newPassWord);
 
             JsonResult result = new JsonResult();
             result.setState(JsonResult.SUCCESS);
 
+            HttpSession session = req.getSession();
+            session.invalidate();
             renderJSON(result, resp);
         } catch (ServiceException e) {
             JsonResult result = new JsonResult(e.getMessage());
@@ -80,7 +85,8 @@ public class SettingServlet extends BaseServlet {
         User user = getCurrentUser(req);
 
         UserService userService = new UserService();
-        userService.updateEmail(user, email);
+        User u = userService.findById(user.getId());
+        userService.updateEmail(u, email);
 
         JsonResult result = new JsonResult();
         result.setState(JsonResult.SUCCESS);

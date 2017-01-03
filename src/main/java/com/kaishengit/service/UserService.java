@@ -351,4 +351,8 @@ public class UserService {
             throw new ServiceException("参数错误！");
         }
     }
+
+    public User findById(Integer id) {
+        return userDao.findById(id);
+    }
 }

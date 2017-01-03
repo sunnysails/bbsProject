@@ -62,10 +62,14 @@ public class UserDao {
                 "  tu.state,\n" +
                 "  tu.createtime,\n" +
                 "  tu.avatar,\n" +
-                "  tll.logintime,\n" +
-                "  tll.ip,\n" +
-                "  max(tll.logintime)\n" +
-                "FROM t_login_log tll, t_user tu\n" +
+                "  a.logintime,\n" +
+                "  a.ip\n" +
+                "FROM t_user tu, (SELECT\n" +
+                "                   tll.logintime,\n" +
+                "                   tll.ip,\n" +
+                "                   tll.userid\n" +
+                "                 FROM t_login_log tll\n" +
+                "                 ORDER BY logintime DESC) a\n" +
                 "GROUP BY tu.id\n" +
                 "LIMIT ?, ?";
         return DbHelp.query(sql,new BeanListHandler<UserVo>(UserVo.class),start,page);

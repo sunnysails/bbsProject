@@ -37,7 +37,8 @@ $(function () {
         messages: {
             userName: {
                 required: "请输入账号",
-                minlength: "帐号至少需要3个字符"
+                minlength: "帐号至少需要3个字符",
+                remote:"该帐号已被注册，不可用"
             },
             passWord: {
                 required: "请输入密码",

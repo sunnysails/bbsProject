@@ -5,8 +5,10 @@ $(function () {
             title: "请输入新节点名称!",
             type: "input",
             showCancelButton: true,
+            cancelButtonText: "取消",
             closeOnConfirm: false,
             animation: "slide-from-top",
+            confirmButtonText: "确定",
             inputPlaceholder: "输入新节点"
         }, function (inputValue) {
             if (inputValue === false) return false;
@@ -18,7 +20,9 @@ $(function () {
                 title: "新节点名称：" + inputValue,
                 text: "确定要建立或更改节点名称?",
                 showConfirmButton: true,
+                confirmButtonText: "确定",
                 showCancelButton: true,
+                cancelButtonText: "取消",
                 closeOnConfirm: false
             }, function () {
                 $.ajax({
@@ -55,6 +59,7 @@ $(function () {
             title: "确定要删除该节点?",
             type: "warning",
             showCancelButton: true,
+            cancelButtonText: "取消",
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "确定",
             closeOnConfirm: false
@@ -64,7 +69,7 @@ $(function () {
                 type: "post",
                 data: {"id": id},
                 success: function (data) {
-                    if (data == 'success') {
+                    if (data.state == 'success') {
                         swal({
                             title: "删除成功!",
                             type: "success",

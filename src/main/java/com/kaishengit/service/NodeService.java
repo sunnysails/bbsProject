@@ -33,8 +33,8 @@ public class NodeService {
             if (node.getTopicNum() > 0) {
                 throw new ServiceException("该节点下已有主题,不可删除");
             } else {
-                nodeDao.delById(nodeId);
                 logger.info("节点{}被删除", node.getNodeName());
+                nodeDao.delById(nodeId);
             }
         } else {
             throw new ServiceException("参数错误");
